@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rooms - Hotel Admin Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" href="/static/images/favicon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/static/icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/static/icons/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/static/icons/favicon-16x16.png">
+<link rel="manifest" href="/static/icons/site.webmanifest">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+    tailwind.config = {
+        darkMode: 'class',
+        theme: {
+            extend: {
+                colors: {
+                    dark: { 
+                        100: '#ffffff',   // pure white background
+                        200: '#f8fafc',   // very light gray
+                        300: '#f1f5f9',   // light gray
+                        400: '#e2e8f0',   // medium gray
+                        500: '#cbd5e1'    // slightly darker gray
+                    },
+                    primary: { 
+                        100: '#eff6ff',   // soft blue tint
+                        500: '#3b82f6',   // blue accent
+                        600: '#2563eb', 
+                        700: '#1d4ed8' 
+                    },
+                    accent: { 
+                        500: '#10b981',   // green accent
+                        600: '#059669' 
+                    }
+                }
+            }
+        }
+    }
+</script>
+
+    <style>
+        .glass-effect { background: rgba(21, 100, 228, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .sidebar-item.active { background: rgba(59, 130, 246, 0.2); border-left: 4px solid #3b82f6; color: #dbeafe; }
+        .sidebar-item:hover { background: rgba(59, 130, 246, 0.1); }
+        .status-badge { padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; }
+        .status-available { background-color: rgba(16, 185, 129, 0.2); color: #10b981; }
+        .status-occupied { background-color: rgba(59, 130, 246, 0.2); color: #3b82f6; }
+        .status-maintenance { background-color: rgba(245, 158, 11, 0.2); color: #f59e0b; }
+        .modal { transition: opacity 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in-card { animation: fadeIn 0.5s ease-out forwards; }
+    </style>
+</head>
+<body class="bg-dark-400 text-gray-200 min-h-screen">
+    <div class="flex min-h-screen">
+        <aside class="w-64 glass-effect p-4 flex flex-col">
+            <div class="flex items-center space-x-3 mb-8 p-2">
+                    <img src="/static/images/logo.jpg" alt="" width="50px">
+                <h1 class="text-xl font-bold">Khar Admin</h1>
+            </div>
+            <nav class="flex-1">
+                <ul class="space-y-2">
+                 <li><a href="{% url 'admin-home' %}" class="sidebar-item {% if selected == 'bookings' %}active{% endif %} flex items-center space-x-3 p-3 rounded-lg"><i class="fas fa-calendar-alt w-5 text-center"></i><span>Bookings</span></a></li>
+                    <li><a href="{% url 'admin-rooms' %}" class="sidebar-item flex {% if selected == 'rooms' %}active{% endif %}  items-center space-x-3 p-3 rounded-lg"><i class="fas fa-bed w-5 text-center"></i><span>Rooms</span></a></li>
+                    <li><a href="{% url 'admin-gallery' %}" class="sidebar-item {% if selected == 'gallery' %}active{% endif %} flex items-center space-x-3 p-3 rounded-lg"><i class="fas fa-images w-5 text-center"></i><span>Gallery</span></a></li>
+                </ul>
+            </nav>
+            <div class="mt-auto pt-4 border-t border-gray-700">
+                <div class="flex items-center space-x-3 p-2">
+                    <div class="w-10 h-10 rounded-full bg-primary-500 flex items-center justify-center"><span class="font-bold">JD</span></div>
+                    <div><p class="font-medium">John Doe</p><p class="text-xs text-gray-400">Administrator</p></div>
+                </div>
+            </div>
+        </aside>
+        <!-- messages  -->
+      
+        
+        {% block adminbase %}
+        {%  endblock %}
+    </body>
+</html>

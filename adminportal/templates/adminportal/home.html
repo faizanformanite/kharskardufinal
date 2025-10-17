@@ -1,0 +1,881 @@
+{% extends 'adminportal/base.html' %}
+{% block adminbase %}
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+<main class="flex-1 p-6 bg-gray-50">
+    <header class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+        <div>
+            <h1 class="text-3xl font-bold text-gray-800">Hotel Dashboard</h1>
+            <p class="text-gray-500 mt-1">Welcome back, John. Here's what's happening today.</p>
+        </div>
+        {% if messages %}
+<div class="fixed top-6 right-6 z-50 space-y-3">
+    {% for message in messages %}
+    <div 
+        class="flex items-start justify-between w-80 p-4 rounded-xl shadow-lg border 
+        {% if message.tags == 'success' %}
+            bg-green-50 border-green-200 text-green-800
+        {% elif message.tags == 'error' %}
+            bg-red-50 border-red-200 text-red-800
+        {% elif message.tags == 'warning' %}
+            bg-yellow-50 border-yellow-200 text-yellow-800
+        {% else %}
+            bg-blue-50 border-blue-200 text-blue-800
+        {% endif %}
+        animate-fade-in"
+    >
+        <div class="flex items-center space-x-3">
+            {% if message.tags == 'success' %}
+            <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M5 13l4 4L19 7" />
+            </svg>
+            {% elif message.tags == 'error' %}
+            <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M6 18L18 6M6 6l12 12" />
+            </svg>
+            {% elif message.tags == 'warning' %}
+            <svg class="w-6 h-6 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 9v2m0 4h.01M12 5a7 7 0 00-7 7v5a7 7 0 0014 0v-5a7 7 0 00-7-7z" />
+            </svg>
+            {% else %}
+            <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13 16h-1v-4h-1m1-4h.01M12 20h.01M12 4h.01" />
+            </svg>
+            {% endif %}
+            <span class="text-sm font-medium">{{ message }}</span>
+        </div>
+        <button type="button" onclick="this.parentElement.remove()" class="text-gray-400 hover:text-gray-700">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- Add this style block for smooth animation -->
+<style>
+@keyframes fade-in {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in {
+    animation: fade-in 0.4s ease-out;
+}
+</style>
+
+        <div class="flex items-center space-x-4 mt-4 md:mt-0">
+            <div class="relative">
+                <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                <input type="text" placeholder="Search..."
+                    class="bg-white border border-gray-300 rounded-lg pl-10 pr-4 py-2 w-64 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <button type="button"
+                class="bg-white border border-gray-300 p-2 rounded-lg hover:bg-gray-100 text-gray-600"><i
+                    class="fas fa-bell"></i></button>
+            <button type="button"
+                class="bg-white border border-gray-300 p-2 rounded-lg hover:bg-gray-100 text-gray-600"><i
+                    class="fas fa-cog"></i></button>
+        </div>
+    </header>
+
+    <!-- Summary Cards -->
+
+    <!-- Today's Activity Section -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <div class="bg-white rounded-xl shadow-lg p-6">
+            <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center"><i
+                    class="fas fa-door-open text-green-500 mr-3"></i>Today's Check-ins</h3>
+            <div class="space-y-3 max-h-48 overflow-y-auto pr-2">
+                {% for booking in bookings %}{% if booking.status == "Expected Check-in Today" %}<div
+                    class="flex justify-between items-center bg-gray-50 p-3 rounded-lg hover:bg-gray-100">
+                    <div>
+                        <p class="font-semibold text-gray-800">{{ booking.name }}</p>
+                        <p class="text-sm text-gray-500">Room: {{ booking.room }}</p>
+                    </div>
+                    
+                </div>{% endif %}{% endfor %}
+            </div>
+        </div>
+        <div class="bg-white rounded-xl shadow-lg p-6">
+            <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center"><i
+                    class="fas fa-door-closed text-red-500 mr-3"></i>Today's Check-outs</h3>
+            <div class="space-y-3 max-h-48 overflow-y-auto pr-2">
+                {% for booking in bookings %}{% if booking.status == "Expected Check-out Today" %}<div
+                    class="flex justify-between items-center bg-gray-50 p-3 rounded-lg hover:bg-gray-100">
+                    <div>
+                        <p class="font-semibold text-gray-800">{{ booking.name }}</p>
+                        <p class="text-sm text-gray-500">Room: {{ booking.room }}</p>
+                    </div><button onclick="handleCheckOut({{ booking.id }})"
+                        class="bg-red-100 hover:bg-red-200 text-red-800 text-xs font-bold py-1 px-3 rounded-md transition-colors">Check-out</button>
+                </div>{% endif %}{% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Bookings Data Table -->
+    <div class="bg-white rounded-xl shadow-2xl p-6">
+        <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+            <h2 class="text-2xl font-bold text-gray-800">Bookings Management</h2>
+            <button type="button"
+                class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-5 py-2.5 rounded-lg flex items-center shadow-lg hover:shadow-xl transition-all"
+                data-modal="addBookingModal"><i class="fas fa-plus mr-2"></i> Add Booking</button>
+        </div>
+
+        <!-- Filters -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4 p-4 bg-gray-50 rounded-lg border">
+            <input type="text" id="nameSearch" placeholder="Search by guest name..."
+                class="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 text-sm">
+            <select id="statusFilter"
+                class="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 text-sm">
+                <option value="">All Statuses</option>
+                <option value="Active">Active</option>
+                <option value="Upcoming">Upcoming</option>
+                <option value="Completed">Completed</option>
+                <option value="Expected Check-in Today">Check-in Today</option>
+                <option value="Expected Check-out Today">Check-out Today</option>
+            </select>
+            <input type="date" id="dateFilter"
+                class="w-full bg-white border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 text-sm">
+            <button id="clearFiltersBtn"
+                class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-lg text-sm">Clear
+                Filters</button>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead class="bg-gray-100">
+                    <tr class="text-gray-600 uppercase tracking-wider">
+                        <th class="py-3 px-6 text-left">Guest</th>
+                        <th class="py-3 px-6 text-left">Booking Reference</th>
+                        <th class="py-3 px-6 text-left">Dates</th>
+                        <th class="py-3 px-6 text-left">Room</th>
+                        <th class="py-3 px-6 text-left">Room No.</th>
+                        
+                        <th class="py-3 px-6 text-center">Status</th>
+                        <th class="py-3 px-6 text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="bookingsTableBody" class="text-gray-800">
+                    {% for booking in bookings %}
+                    <tr class="border-b hover:bg-gray-50 transition-colors">
+                        <td class="py-4 px-6 font-medium">
+                            <div class="flex items-center gap-3">
+                                <div
+                                    class="bg-blue-100 text-blue-700 font-bold w-10 h-10 flex items-center justify-center rounded-full">
+                                    {{ booking.name|first|upper }}</div>
+                                <div>
+                                    <p class="font-bold">{{ booking.name }}</p>
+                                    <p class="text-xs text-gray-500">{{ booking.phone|default_if_none:'' }}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="py-4 px-6">{{booking.refNumber}}</td>
+                        <td class="py-4 px-6">
+                            <p class="font-semibold">{{ booking.check_in|date:"d M, Y" }}</p>
+                            <p class="text-xs text-gray-500">to {{ booking.check_out|date:"d M, Y" }}</p>
+                        </td>
+                        <td class="py-4 px-6">{{ booking.room }}</td>
+                        <td class="py-4 px-6">{{ booking.room_no }}</td>
+                        <td class="py-4 px-6 text-center">
+                            <span class="px-3 py-1 text-xs font-bold rounded-full 
+                                {% if booking.color == 'green' %}bg-green-100 text-green-800
+                                {% elif booking.color == 'yellow' %}bg-yellow-100 text-yellow-800
+                                {% elif booking.color == 'blue' %}bg-blue-100 text-blue-800
+                                {% elif booking.color == 'orange' %}bg-orange-100 text-orange-800
+                                {% elif booking.color == 'red' %}bg-red-100 text-red-800
+                                {% else %}bg-gray-200 text-gray-800{% endif %}">
+                                {{ booking.status }}
+                            </span>
+                        </td>
+                        <td class="py-4 px-6 text-right display-flex gap-2 justify-end" style="display: flex;">
+                            {% if booking.status == 'Pending' %}
+                            <a href="{% url 'confirm_booking' booking.id %}" class="bg-green-500 hover:bg-green-600 text-white text-xs font-bold py-2 px-3 rounded-md transition-colors mr-2">Confirm</a>
+                                
+                            
+                            <a href="{% url 'decline_booking' booking.id %}" class="bg-red-500 hover:bg-red-600 text-white text-xs font-bold py-2 px-3 rounded-md transition-colors mr-2">Decline</a>
+                            
+                            
+                            {% elif booking.checkedin == True and booking.action != 'Check Out' %}
+                            <button
+                                class="bg-red-500 hover:bg-red-600 text-white text-xs font-bold py-2 px-3 rounded-md transition-colors">Checked
+                                In</button>
+                            {% elif booking.checkedout == True %}
+                            
+                            <button disabled class="bg-gray-300 text-gray-500 p-1 " style="border-radius: 4px;">Checked
+                                Out</button>
+
+                            {% elif booking.action == 'Check In' %}
+                            <button onclick="handleCheckIn({{ booking.id }})"
+                                class="bg-green-500 hover:bg-green-600 text-white text-xs font-bold py-2 px-3 rounded-md transition-colors">Check-in</button>
+                            {% elif booking.action == 'Check Out' %}
+                            <button onclick="handleCheckOut({{ booking.id }})"
+                                class="bg-red-500 hover:bg-red-600 text-white text-xs font-bold py-2 px-3 rounded-md transition-colors">Check-out</button>
+                            {% else %}
+                            <button class="text-blue-500 hover:text-blue-700 text-lg mr-3"><i
+                                    class="fas fa-edit"></i></button>
+                            <button class="text-red-500 hover:text-red-700 text-lg"><i
+                                    class="fas fa-trash"></i></button>
+                            {% endif %}
+                            <!-- download ticket -->
+                            <button onclick="downloadTicket({{ booking.id }})"
+                                class="bg-green-500 hover:bg-white-600 text-white text-xs font-bold py-2 px-3 rounded-md transition-colors">
+                                <i class="fas fa-download mr-2"></i> Download Ticket
+                            </button>
+
+
+
+
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <!-- Pagination -->
+        <div class="flex justify-between items-center mt-6">
+            <span class="text-sm text-gray-600">Showing <span id="page-info-start">1</span>-<span
+                    id="page-info-end">10</span> of <span id="page-info-total">{{ bookings|length }}</span></span>
+            <div>
+                <button id="prev-page"
+                    class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-l-lg text-sm">-</button>
+                <button id="next-page"
+                    class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-r-lg text-sm">+</button>
+            </div>
+        </div>
+    </div>
+
+
+
+</main>
+
+<!-- Add Booking Modal -->
+<div id="addBookingModal"
+    class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 opacity-0 pointer-events-none"
+    role="dialog" aria-modal="true" aria-labelledby="addBookingModalTitle">
+    <div id="modalDialog"
+        class="bg-white rounded-xl p-6 w-full max-w-lg transition-all duration-300 transform scale-95">
+        <div class="flex justify-between items-center mb-4">
+            <h3 id="addBookingModalTitle" class="text-xl font-bold text-gray-800">Add New Booking</h3>
+            <button type="button" class="close-modal text-gray-400 hover:text-gray-700"><i
+                    class="fas fa-times"></i></button>
+        </div>
+
+        <form id="addBookingForm">
+            <!-- Step 1: Date Selection -->
+            <div id="dateSelectionPanel">
+                <p class="text-gray-600 mb-4">Select the check-in and check-out dates to find available rooms.</p>
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="checkin" class="block text-sm font-medium text-gray-700 mb-1">Check-in</label>
+                        <input type="date" id="checkin" name="checkin"
+                            class="w-full bg-gray-50 color-black border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            required>
+                    </div>
+                    <div>
+                        <label for="checkout" class="block text-sm font-medium text-gray-700 mb-1 ">Check-out</label>
+                        <input type="date" id="checkout" name="checkout"
+                            class="w-full bg-gray-50 color-black border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Room Selection & Guest Details -->
+            <div id="resultsPanel" class="hidden">
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4 flex justify-between items-center">
+                    <div>
+                        <p class="text-sm text-blue-800">Showing rooms available from <strong
+                                id="date-range-display-checkin"></strong> to <strong
+                                id="date-range-display-checkout"></strong>.</p>
+                    </div>
+                    <button type="button" id="changeDatesBtn"
+                        class="text-sm font-semibold text-blue-600 hover:underline">Change Dates</button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Left Column: Available Rooms -->
+                    <div class="md:border-r md:pr-6">
+                        <h4 class="text-lg font-semibold text-gray-700 mb-2">Select a Room</h4>
+                        <div id="loader" class="text-center p-4 hidden"><i
+                                class="fas fa-spinner fa-spin text-blue-500 text-2xl"></i></div>
+                        <ul id="availableRoomsList" class="space-y-3 max-h-96 overflow-y-auto pr-2">
+                            <!-- Room items will be populated here -->
+                        </ul>
+                    </div>
+                    <!-- Right Column: Guest Details -->
+                    <div id="guestDetailsPanel" class="hidden">
+                        <h4 class="text-lg font-semibold text-gray-700 mb-2">Guest Details</h4>
+                        <div class="space-y-4">
+                            <div>
+                                <label for="guestName" class="block text-sm font-medium text-gray-700 mb-1">Guest
+                                    Name</label>
+                                <input type="text" id="guestName" name="guestName" placeholder="e.g., John Doe"
+                                    class="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                                <input type="email" id="email" name="email" placeholder="e.g., john@example.com"
+                                    class="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div>
+                                <label for="number" class="block text-sm font-medium text-gray-700 mb-1">Phone
+                                    Number</label>
+                                <input type="tel" id="number" name="number" placeholder="e.g., +92 300 1234567"
+                                    class="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Actions -->
+            <div id="formActions" class="flex justify-end space-x-3 mt-6 border-t pt-4">
+                <button type="button"
+                    class="close-modal bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg">Cancel</button>
+                <button id="checkAvailabilityBtn" type="submit"
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2 rounded-lg">Check
+                    Availability</button>
+                <button id="confirmBookingBtn" type="submit"
+                    class="bg-green-600 hover:bg-green-700 text-white font-bold px-4 py-2 rounded-lg hidden">Confirm
+                    Booking</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const modal = document.getElementById('addBookingModal');
+        const modalDialog = document.getElementById('modalDialog');
+        const form = document.getElementById('addBookingForm');
+
+        // Panels
+        const dateSelectionPanel = document.getElementById('dateSelectionPanel');
+        const resultsPanel = document.getElementById('resultsPanel');
+        const guestDetailsPanel = document.getElementById('guestDetailsPanel');
+        const roomsList = document.getElementById('availableRoomsList');
+
+        // Buttons
+        const checkAvailabilityBtn = document.getElementById('checkAvailabilityBtn');
+        const confirmBookingBtn = document.getElementById('confirmBookingBtn');
+        const changeDatesBtn = document.getElementById('changeDatesBtn');
+
+        // Other elements
+        const loader = document.getElementById('loader');
+
+        // Function to open/close modal with animation
+        const openModal = () => {
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modalDialog.classList.remove('scale-95');
+        };
+        const closeModal = () => {
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            modalDialog.classList.add('scale-95');
+            resetModal(); // Reset modal state when closed
+        };
+
+        // Reset modal to its initial state
+        const resetModal = () => {
+            form.reset();
+            dateSelectionPanel.classList.remove('hidden');
+            resultsPanel.classList.add('hidden');
+            guestDetailsPanel.classList.add('hidden');
+            checkAvailabilityBtn.classList.remove('hidden');
+            confirmBookingBtn.classList.add('hidden');
+            roomsList.innerHTML = '';
+            modalDialog.classList.remove('max-w-4xl');
+            modalDialog.classList.add('max-w-lg');
+        };
+
+        // Event listeners for modal triggers
+        document.querySelector('[data-modal="addBookingModal"]').addEventListener('click', openModal);
+        document.querySelectorAll('.close-modal').forEach(btn => btn.addEventListener('click', closeModal));
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        // Handle "Change Dates" button
+        changeDatesBtn.addEventListener('click', () => {
+            resultsPanel.classList.add('hidden');
+            dateSelectionPanel.classList.remove('hidden');
+            checkAvailabilityBtn.classList.remove('hidden');
+            confirmBookingBtn.classList.add('hidden');
+            guestDetailsPanel.classList.add('hidden');
+            modalDialog.classList.remove('max-w-4xl');
+            modalDialog.classList.add('max-w-lg');
+            roomsList.innerHTML = ''; // Clear previous results
+        });
+
+        // Handle room selection
+        roomsList.addEventListener('click', function (e) {
+            const selectedItem = e.target.closest('li');
+            if (!selectedItem) return;
+
+            // Update styles for all items
+            this.querySelectorAll('li').forEach(item => {
+                item.classList.remove('border-blue-500', 'bg-blue-50');
+                item.querySelector('input').checked = false;
+            });
+
+            // Apply style to selected item
+            selectedItem.classList.add('border-blue-500', 'bg-blue-50');
+            selectedItem.querySelector('input').checked = true;
+
+            // Show guest details form
+            guestDetailsPanel.classList.remove('hidden');
+        });
+
+        // Main form submission logic
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // --- If "Confirm Booking" is visible, handle final submission ---
+            if (!confirmBookingBtn.classList.contains('hidden')) {
+                const selectedRoomInput = document.querySelector('input[name="selected_room"]:checked');
+                if (!selectedRoomInput) {
+                    alert('Please select a room.');
+                    return;
+                }
+
+                const bookingDetails = {
+                    guest_name: document.getElementById('guestName').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('number').value,
+                    checkin_date: document.getElementById('checkin').value,
+                    checkout_date: document.getElementById('checkout').value,
+                    room_id: selectedRoomInput.value,
+                };
+
+                // Basic validation
+                if (!bookingDetails.guest_name || !bookingDetails.email || !bookingDetails.phone) {
+                    alert('Please fill out all guest details.');
+                    return;
+                }
+
+                confirmBookingBtn.disabled = true;
+                confirmBookingBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+
+                fetch("{% url 'admin-bookings' %}", {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '{{ csrf_token }}' },
+                    body: JSON.stringify(bookingDetails)
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('Booking created successfully!');
+                            window.location.reload();
+                        } else {
+                            alert('Could not create booking: ' + (data.error || 'Unknown error'));
+                        }
+                    })
+                    .catch(err => {
+                        console.error('Booking Error:', err);
+                        alert('An error occurred while creating the booking.');
+                    })
+                    .finally(() => {
+                        confirmBookingBtn.disabled = false;
+                        confirmBookingBtn.innerHTML = 'Confirm Booking';
+                    });
+                return;
+            }
+
+            // --- Otherwise, handle "Check Availability" ---
+            const checkin = document.getElementById('checkin').value;
+            const checkout = document.getElementById('checkout').value;
+
+            if (!checkin || !checkout || new Date(checkout) <= new Date(checkin)) {
+                alert('Please select valid check-in and check-out dates.');
+                return;
+            }
+            if (new Date(checkin) < new Date().setHours(0, 0, 0, 0)) {
+                alert('Check-in date cannot be in the past.');
+                return;
+            }
+
+
+            loader.classList.remove('hidden');
+            checkAvailabilityBtn.disabled = true;
+
+            fetch("{% url 'check-Availability' %}", {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '{{ csrf_token }}' },
+                body: JSON.stringify({ checkin, checkout })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.rooms && data.rooms.length > 0) {
+                        // Transition to results view
+                        dateSelectionPanel.classList.add('hidden');
+                        resultsPanel.classList.remove('hidden');
+                        modalDialog.classList.remove('max-w-lg');
+                        modalDialog.classList.add('max-w-4xl');
+
+                        // Display selected date range
+                        document.getElementById('date-range-display-checkin').textContent = new Date(checkin).toLocaleDateString('en-CA'); // YYYY-MM-DD format
+                        document.getElementById('date-range-display-checkout').textContent = new Date(checkout).toLocaleDateString('en-CA'); // YYYY-MM-DD format
+
+                        // Populate rooms list
+                        roomsList.innerHTML = '';
+                        data.rooms.forEach(room => {
+                            const li = document.createElement('li');
+                            li.className = 'border border-gray-300 rounded-lg p-3 flex items-center space-x-3 hover:border-blue-500 cursor-pointer transition-colors';
+                            li.innerHTML = `
+                       <div class="w-16 h-16 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-xl shadow-lg">
+  ${room.room_no || 'N/A'}
+</div><div class="flex-grow">
+                            <h5 class="font-bold text-gray-800">${room.title}</h5>
+                            <p class="text-sm text-gray-500">$${room.price}/night</p>
+                        </div>
+                        <input type="radio" name="selected_room" value="${room.id}" class="form-radio h-5 w-5 text-blue-600 focus:ring-blue-500 shrink-0">
+                    `;
+                            roomsList.appendChild(li);
+                        });
+
+                        // Update buttons
+                        checkAvailabilityBtn.classList.add('hidden');
+                        confirmBookingBtn.classList.remove('hidden');
+                    } else {
+                        alert('No rooms available for the selected dates.');
+                    }
+                })
+                .catch(err => {
+                    console.error('Availability Error:', err);
+                    alert('An error occurred. Please try again.');
+                })
+                .finally(() => {
+                    loader.classList.add('hidden');
+                    checkAvailabilityBtn.disabled = false;
+                });
+        });
+    });
+
+    // Functions for Check-in and Check-out
+    function handleCheckIn(bookingId) {
+        if (!confirm('Are you sure you want to check in this guest?')) return;
+
+        // Replace with your actual URL name for the check-in view
+        const url = '{% url 'checkin' 0 %}'.replace('/0/', `/${bookingId}/`);
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({ id: bookingId })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Guest checked in successfully!');
+                    window.location.reload();
+                } else {
+                    alert('Error checking in: ' + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Check-in Error:', error);
+                alert('An error occurred during check-in.');
+            });
+    }
+
+    function handleCheckOut(bookingId) {
+        if (!confirm('Are you sure you want to check out this guest?')) return;
+
+        // Replace with your actual URL name for the check-out view
+        const url = '{% url "checkout" 0 %}'.replace('/0/', `/${bookingId}/`);
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({ id: bookingId })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Guest checked out successfully!');
+                    window.location.reload();
+                } else {
+                    alert('Error checking out: ' + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Check-out Error:', error);
+                alert('An error occurred during check-out.');
+            });
+    }
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Existing Modal & Check-in/out JS
+        // ...
+
+        // --- New Data Table Filtering and Pagination ---
+        const nameSearch = document.getElementById('nameSearch');
+        const statusFilter = document.getElementById('statusFilter');
+        const dateFilter = document.getElementById('dateFilter');
+        const clearFiltersBtn = document.getElementById('clearFiltersBtn');
+        const tableBody = document.getElementById('bookingsTableBody');
+        const allRows = Array.from(tableBody.getElementsByTagName('tr'));
+
+        // Pagination elements
+        const prevPageBtn = document.getElementById('prev-page');
+        const nextPageBtn = document.getElementById('next-page');
+        const pageInfoStart = document.getElementById('page-info-start');
+        const pageInfoEnd = document.getElementById('page-info-end');
+        const pageInfoTotal = document.getElementById('page-info-total');
+
+        let currentPage = 1;
+        const rowsPerPage = 10;
+        let filteredRows = allRows;
+
+        function applyFiltersAndPagination() {
+            const nameQuery = nameSearch.value.toLowerCase();
+            const statusQuery = statusFilter.value;
+            const dateQuery = dateFilter.value;
+
+            filteredRows = allRows.filter(row => {
+                const guestName = row.cells[0].textContent.toLowerCase();
+                const status = row.cells[3].textContent.trim();
+                const checkinDateText = row.cells[1].querySelector('p.font-semibold').textContent.trim();
+
+                // Convert "d M, Y" format to "YYYY-MM-DD" for comparison
+                const dateParts = checkinDateText.split(' ');
+                const day = dateParts[0];
+                const month = new Date(Date.parse(dateParts[1] + " 1, 2012")).getMonth() + 1;
+                const year = dateParts[2];
+                const checkinDate = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+
+                const nameMatch = guestName.includes(nameQuery);
+                const statusMatch = !statusQuery || status === statusQuery;
+                const dateMatch = !dateQuery || checkinDate === dateQuery;
+
+                return nameMatch && statusMatch && dateMatch;
+            });
+
+            currentPage = 1;
+            renderTablePage();
+        }
+
+        function renderTablePage() {
+            // Hide all rows first
+            allRows.forEach(row => row.style.display = 'none');
+
+            const totalRows = filteredRows.length;
+            const totalPages = Math.ceil(totalRows / rowsPerPage);
+
+            // Ensure current page is valid
+            if (currentPage > totalPages) currentPage = totalPages;
+            if (currentPage < 1) currentPage = 1;
+
+            const start = (currentPage - 1) * rowsPerPage;
+            const end = start + rowsPerPage;
+            const rowsToShow = filteredRows.slice(start, end);
+
+            rowsToShow.forEach(row => row.style.display = '');
+
+            // Update pagination UI
+            pageInfoStart.textContent = totalRows > 0 ? start + 1 : 0;
+            pageInfoEnd.textContent = Math.min(end, totalRows);
+            pageInfoTotal.textContent = totalRows;
+
+            prevPageBtn.disabled = currentPage === 1;
+            nextPageBtn.disabled = currentPage === totalPages || totalRows === 0;
+        }
+
+        // Event Listeners for filters
+        nameSearch.addEventListener('keyup', applyFiltersAndPagination);
+        statusFilter.addEventListener('change', applyFiltersAndPagination);
+        dateFilter.addEventListener('change', applyFiltersAndPagination);
+
+        clearFiltersBtn.addEventListener('click', () => {
+            nameSearch.value = '';
+            statusFilter.value = '';
+            dateFilter.value = '';
+            applyFiltersAndPagination();
+        });
+
+        // Event Listeners for pagination
+        prevPageBtn.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                renderTablePage();
+            }
+        });
+
+        nextPageBtn.addEventListener('click', () => {
+            const totalPages = Math.ceil(filteredRows.length / rowsPerPage);
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderTablePage();
+            }
+        });
+
+        // Initial render
+        renderTablePage();
+    });
+
+    // Existing modal and check-in/out functions remain here
+    // ...
+</script>
+<script>
+    // <div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl" id="success-card">
+
+    //         <!-- Header Section -->
+    //         <div class="p-8 md:p-10 bg-amber-50 rounded-t-2xl text-center border-b-2 border-dashed border-amber-200">
+    //             <i class="fas fa-check-circle text-green-500 text-5xl"></i>
+    //             <h1 class="font-playfair text-4xl md:text-5xl font-bold text-amber-900 mt-4">Booking Confirmed!</h1>
+    //             <p class="text-gray-600 mt-3 text-lg">Thank you, {{ details.guestName }}. Your stay at Khar Skardu is booked.</p>
+    //         </div>
+
+    //         <!-- Body Section -->
+    //         <div class="p-8 md:p-10">
+    //             <div class="flex flex-col md:flex-row gap-8">
+    //                 <!-- Left Side: Booking Details -->
+    //                 <div class="flex-grow text-left">
+    //                     <h2 class="font-playfair text-2xl font-bold text-gray-700 mb-6">Your Itinerary</h2>
+    //                     <div class="space-y-5">
+    //                         <div class="ticket-detail-item">
+    //                             <i class="fas fa-hashtag fa-fw"></i>
+    //                             <div>
+    //                                 <p class="text-sm text-gray-500">Booking Reference</p>
+    //                                 <p id="ref-number" class="font-semibold text-lg text-amber-800">{{ details.refNumber }}</p>
+    //                             </div>
+    //                         </div>
+    //                         <div class="ticket-detail-item">
+    //                             <i class="fas fa-user fa-fw"></i>
+    //                             <div>
+    //                                 <p class="text-sm text-gray-500">Guest</p>
+    //                                 <p id="guest-name" class="font-semibold">{{ details.guestName }}</p>
+    //                             </div>
+    //                         </div>
+    //                         <div class="ticket-detail-item">
+    //                             <i class="fas fa-door-open fa-fw"></i>
+    //                             <div>
+    //                                 <p class="text-sm text-gray-500">Room</p>
+    //                                 <p id="room-name" class="font-semibold">{{ details.roomName }}</p>
+    //                             </div>
+    //                         </div>
+    //                         <div class="ticket-detail-item">
+    //                             <i class="fas fa-calendar-check fa-fw"></i>
+    //                             <div>
+    //                                 <p class="text-sm text-gray-500">Check-in</p>
+    //                                 <p id="checkin-date" class="font-semibold">{{ details.checkinDate|date:"l, F j, Y" }}</p>
+    //                             </div>
+    //                         </div>
+    //                         <div class="ticket-detail-item">
+    //                             <i class="fas fa-calendar-times fa-fw"></i>
+    //                             <div>
+    //                                 <p class="text-sm text-gray-500">Check-out</p>
+    //                                 <p id="checkout-date" class="font-semibold">{{ details.checkoutDate|date:"l, F j, Y" }}</p>
+    //                             </div>
+    //                         </div>
+    //                     </div>
+    //                 </div>
+    //                 <!-- Right Side: QR Code and Price -->
+    //                 <div class="w-full md:w-56 flex-shrink-0 text-center bg-gray-50 p-6 rounded-lg">
+    //                     <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=Ref:{{ details.refNumber }}" alt="Booking QR Code" class="mx-auto">
+    //                     <p class="text-xs text-gray-500 mt-2">Scan for booking details</p>
+    //                     <div class="mt-4 border-t pt-4">
+    //                         <p class="text-sm text-gray-500">Total Amount</p>
+    //                         <p id="total-amount" class="font-semibold text-2xl text-amber-900">{{ details.totalAmount }}</p>
+    //                         <p class="text-xs text-gray-500">(Pay at Property)</p>
+    //                     </div>
+    //                 </div>
+    //             </div>
+    //         </div>
+
+    //         <!-- Footer Section -->
+    //         <div class="bg-gray-800 text-white p-6 rounded-b-2xl text-center text-sm">
+    //             <div class="flex items-center justify-center gap-2">
+    //                 <i class="fas fa-car-side text-amber-300"></i>
+    //                 <p><strong>Note:</strong> Paid airport pick & drop service is available. Please contact us to arrange.</p>
+    //             </div>
+    //             <p class="mt-2 opacity-70">{{ details.hotelAddress }} | {{ details.hotelContact }}</p>
+    //         </div>
+    //     </div>
+    function downloadTicket(bookingId) {
+        const url = `{% url "download_ticket" 0 %}`.replace('/0/', `/${bookingId}/`);
+        fetch(url, {
+            method: 'GET',
+            headers: { 'X-CSRFToken': '{{ csrf_token }}' }
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const details = data.details;
+                    const ticketDiv = document.createElement('div');
+                    ticketDiv.style.position = 'absolute';
+                    ticketDiv.style.left = '-9999px';
+                    ticketDiv.style.width = '896px';
+                    ticketDiv.style.fontFamily = "'Lato', sans-serif";
+
+                    ticketDiv.innerHTML = `
+                <div style="background-color: #ffffff; border-radius: 1rem; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); width: 100%;">
+                    <div style="padding: 2.5rem; background-color: #fffbeb; border-top-left-radius: 1rem; border-top-right-radius: 1rem; text-align: center; border-bottom: 2px dashed #fde68a;">
+                        <i class="fas fa-check-circle" style="color: #22c55e; font-size: 3rem;"></i>
+                        <h1 style="font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 700; color: #78350f; margin-top: 1rem;">Booking Confirmed!</h1>
+                        <p style="color: #4b5563; margin-top: 0.75rem; font-size: 1.125rem;">Thank you, ${details.guestName}. Your stay at Khar Skardu is booked.</p>
+                    </div>
+                    <div style="padding: 2.5rem;">
+                        <div style="display: flex; gap: 2rem; flex-direction: row;">
+                            <div style="flex-grow: 1; text-align: left;">
+                                <h2 style="font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: #374151; margin-bottom: 1.5rem;">Your Itinerary</h2>
+                                <div style="display: grid; gap: 1.25rem;">
+                                    <div style="display: flex; align-items: center; gap: 0.75rem;"><i class="fas fa-hashtag fa-fw" style="color: #92400e;"></i><div><p style="font-size: 0.875rem; color: #6b7280;">Booking Reference</p><p style="font-weight: 600; font-size: 1.125rem; color: #92400e;">${details.refNumber}</p></div></div>
+                                    <div style="display: flex; align-items: center; gap: 0.75rem;"><i class="fas fa-user fa-fw" style="color: #92400e;"></i><div><p style="font-size: 0.875rem; color: #6b7280;">Guest</p><p style="font-weight: 600;color:#92400e;">${details.guestName}</p></div></div>
+                                    <div style="display: flex; align-items: center; gap: 0.75rem;"><i class="fas fa-door-open fa-fw" style="color: #92400e;"></i><div><p style="font-size: 0.875rem; color: #6b7280;">Room</p><p style="font-weight: 600;color:#92400e;">${details.roomName}</p></div></div>
+                                    <div style="display: flex; align-items: center; gap: 0.75rem;"><i class="fas fa-calendar-check fa-fw" style="color: #92400e;"></i><div><p style="font-size: 0.875rem; color: #6b7280;">Check-in</p><p style="font-weight: 600;color:#92400e;">${details.checkinDate}</p></div></div>
+                                    <div style="display: flex; align-items: center; gap: 0.75rem;"><i class="fas fa-calendar-times fa-fw" style="color: #92400e;"></i><div><p style="font-size: 0.875rem; color: #6b7280;">Check-out</p><p style="font-weight: 600;color:#92400e;">${details.checkoutDate}</p></div></div>
+                                </div>
+                            </div>
+                            <div style="width: 14rem; flex-shrink: 0; text-align: center; background-color: #f9fafb; padding: 1.5rem; border-radius: 0.5rem;">
+                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=Ref:${details.refNumber}" alt="Booking QR Code" style="margin: auto;">
+                                <p style="font-size: 0.75rem; color: #6b7280; margin-top: 0.5rem;">Scan for booking details</p>
+                                <div style="margin-top: 1rem; border-top: 1px solid #e5e7eb; padding-top: 1rem;">
+                                    <p style="font-size: 0.875rem; color: #6b7280;">Total Amount</p>
+                                    <p style="font-weight: 600; font-size: 1.5rem; color: #78350f;">${details.totalAmount}</p>
+                                    <p style="font-size: 0.75rem; color: #6b7280;">(Pay at Property)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="background-color: #1f2937; color: #ffffff; padding: 1.5rem; border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem; text-align: center; font-size: 0.875rem;">
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                            <i class="fas fa-car-side" style="color: #fcd34d;"></i>
+                            <p><strong>Note:</strong> Paid airport pick & drop service is available. Please contact us to arrange.</p>
+                        </div>
+                        <p style="margin-top: 0.5rem; opacity: 0.7;">${details.hotelAddress} | ${details.hotelContact}</p>
+                    </div>
+                </div>
+            `;
+                    document.body.appendChild(ticketDiv);
+
+                    html2canvas(ticketDiv, { scale: 2, useCORS: true }).then(canvas => {
+                        const link = document.createElement('a');
+                        link.href = canvas.toDataURL('image/png');
+                        link.download = `Booking_Ticket_${details.refNumber}.png`;
+                        link.click();
+                        document.body.removeChild(ticketDiv); // Clean up
+                    });
+                } else {
+                    alert('Could not retrieve booking details.');
+                }
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+    }
+</script>
+{% endblock %}

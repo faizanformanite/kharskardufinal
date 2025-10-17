@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room Status Dashboard</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* Use the Inter font family */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Styles for the new theme */
+        body {
+            background-color: #f9fafb; /* gray-50 */
+            color: #1f2937; /* gray-800 */
+        }
+        .modal {
+            transition: opacity 0.3s ease;
+        }
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .status-available { background-color: #2f855a; color: white; }
+        .status-occupied { background-color: #c53030; color: white; }
+        .status-maintenance { background-color: #b7791f; color: white; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+{% extends './base.html' %}
+{% block adminbase %}
+        <main class="flex-1 p-6">
+            {% if messages %}
+<div class="fixed top-6 right-6 z-50 space-y-3">
+    {% for message in messages %}
+    <div 
+        class="flex items-start justify-between w-80 p-4 rounded-xl shadow-lg border 
+        {% if message.tags == 'success' %}
+            bg-green-50 border-green-200 text-green-800
+        {% elif message.tags == 'error' %}
+            bg-red-50 border-red-200 text-red-800
+        {% elif message.tags == 'warning' %}
+            bg-yellow-50 border-yellow-200 text-yellow-800
+        {% else %}
+            bg-blue-50 border-blue-200 text-blue-800
+        {% endif %}
+        animate-fade-in"
+    >
+        <div class="flex items-center space-x-3">
+            {% if message.tags == 'success' %}
+            <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M5 13l4 4L19 7" />
+            </svg>
+            {% elif message.tags == 'error' %}
+            <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M6 18L18 6M6 6l12 12" />
+            </svg>
+            {% elif message.tags == 'warning' %}
+            <svg class="w-6 h-6 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 9v2m0 4h.01M12 5a7 7 0 00-7 7v5a7 7 0 0014 0v-5a7 7 0 00-7-7z" />
+            </svg>
+            {% else %}
+            <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13 16h-1v-4h-1m1-4h.01M12 20h.01M12 4h.01" />
+            </svg>
+            {% endif %}
+            <span class="text-sm font-medium">{{ message }}</span>
+        </div>
+        <button type="button" onclick="this.parentElement.remove()" class="text-gray-400 hover:text-gray-700">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- Add this style block for smooth animation -->
+<style>
+@keyframes fade-in {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in {
+    animation: fade-in 0.4s ease-out;
+}
+</style>
+
+
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-bold text-slate-900">Room Management</h2>
+                    <button type="button" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center" data-modal="addRoomModal"><i class="fas fa-plus mr-2"></i> Add Room</button>
+                </div>
+                
+                <div id="roomsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+{% for room in roomshow %}
+<div class="room-card bg-gray-50 border rounded-xl p-5 shadow-lg flex flex-col" id="{{ room.id }}">
+    <div class="flex justify-between items-start mb-4">
+    <div>
+        <h3 class="text-lg font-bold text-slate-800">{{ room.title }}</h3>
+        <p class="text-gray-500 text-sm">{{ room.room_type }}</p>
+    </div>
+        <span class="status-badge status-available">Available</span>
+    
+    </div>
+
+    <div class="relative room-slider mb-4">
+    <div class="w-full h-40 rounded-lg overflow-hidden">
+        {% if not room.images.all %}
+        <div class="w-full h-full bg-gray-200 flex items-center justify-center">
+            <i class="fas fa-image text-gray-400 text-4xl"></i>
+        </div>
+        {% else %}
+        {% for image in room.images.all %}
+        <img src="{{ image.image.url }}" alt="{{ room.title }} image" 
+            class="room-image w-full h-full object-cover transition-opacity duration-300 ease-in-out {% if not forloop.first %}absolute top-0 left-0 opacity-0{% endif %}">
+        {% endfor %}
+        {% endif %}
+    </div>
+
+    {% if room.images.all|length > 1 %}
+    <button class="slider-btn slider-prev absolute top-1/2 left-2 transform -translate-y-1/2 bg-black bg-opacity-40 text-white p-2 rounded-full hover:bg-opacity-60 focus:outline-none">
+        <i class="fas fa-chevron-left fa-fw"></i>
+    </button>
+    <button class="slider-btn slider-next absolute top-1/2 right-2 transform -translate-y-1/2 bg-black bg-opacity-40 text-white p-2 rounded-full hover:bg-opacity-60 focus:outline-none">
+        <i class="fas fa-chevron-right fa-fw"></i>
+    </button>
+    {% endif %}
+    </div>
+    <div class="flex justify-between items-center mt-auto">
+    <p class="text-xl font-bold text-slate-900">${{ room.price|floatformat:0 }}<span class="text-sm font-normal text-gray-500">/night</span></p>
+    <div>
+        <button class="text-blue-600 mr-2" onclick="editRoom({{ room.id }})"><i class="fas fa-edit"></i></button>
+        <button class="text-red-600" onclick="deleteRoom({{ room.id }})"><i class="fas fa-trash"></i></button>
+    </div>
+    </div>
+</div>
+{% endfor %}
+</div>
+            </div>
+            <header class="flex flex-col md:flex-row justify-between items-start md:items-center my-8">
+                <div>
+                    <h1 class="text-3xl font-bold text-slate-900">Room Status Dashboard</h1>
+                    <p class="text-gray-500 mt-1">Live overview of all hotel rooms.</p>
+                </div>
+                <button class="mt-4 md:mt-0 bg-blue-600 text-white font-bold py-2 px-4 rounded-lg flex items-center gap-2 hover:bg-blue-700 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+                    <i class="fas fa-plus"></i>
+                    <span>New Booking</span>
+                </button>
+            </header>
+
+            <!-- Room Cards Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+
+                <!-- 
+                    DJANGO TEMPLATE LOGIC:
+                    The loop iterates through each 'room' object.
+                    to conditionally apply styles and content based on the room.status string.
+                -->
+                {% for room in rooms %}
+                
+                <article class="
+                    bg-white rounded-xl shadow-md p-6 
+                    hover:-translate-y-1 hover:shadow-lg 
+                    transition-all duration-300 flex flex-col
+                    {% if room.status == 'Available' %} border-l-4 border-green-500
+                    {% elif room.status == 'Booked Today' %} border-l-4 border-red-500
+                    {% elif room.status == 'Cleaning' %} border-l-4 border-blue-500
+                    {% else %} border-l-4 border-amber-500 {% endif %}
+                ">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <span class="text-xs font-semibold bg-gray-200 text-gray-800 px-3 py-1 rounded-full">{{ room.floor }}</span>
+                                <h2 class="text-5xl font-bold text-slate-900 mt-2">{{ room.room_no }}</h2>
+                            </div>
+                            
+                            <div class="text-2xl p-3 rounded-full
+                                {% if room.status == 'Available' %} bg-green-100 text-green-800
+                                {% elif room.status == 'booked Today' %} bg-red-100 text-red-800
+                                {% elif room.status == 'Next Booking' %} bg-yellow-100 text-yellow-800
+                                {% elif room.status == 'Maintenance' %} bg-gray-100 text-gray-800
+                                {% elif room.status == 'Cleaning' %} bg-blue-100 text-blue-800
+                                {% else %} bg-amber-100 text-amber-800 {% endif %}
+                            ">
+                                {% if room.status == 'Available' %} <i class="fas fa-check"></i>
+                                {% elif room.status == 'Booked Today' %} <i class="fas fa-bed"></i>
+                                {% elif room.status == 'Cleaning' %} <i class="fas fa-broom"></i>
+                                {% elif room.status == 'Next Booking' %} <i class="fas fa-clock"></i>
+                                {% elif room.status == 'Maintenance' %} <i class="fas fa-tools"></i>
+                                {% else %} <i class="fas fa-wrench"></i> {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <p class="text-lg font-semibold 
+                                {% if room.status == 'Available' %} text-green-600
+                                {% elif room.status == 'Booked Today' %} text-red-600
+                                {% elif room.status == 'Cleaning' %} text-blue-600
+                                {% else %} text-amber-600 {% endif %}
+                            ">{{ room.status }}</p>
+                            
+                            <div class="text-sm text-gray-500 mt-2 space-y-1">
+                                <p><strong class="text-slate-700">Type:</strong> {{ room.title }}</p>
+                                
+                                {% if room.status == 'Booked Today' %}
+                                    <p><strong class="text-slate-700">Guest:</strong> {{ room.guest_name }}</p>
+                                    <p><strong class="text-slate-700">Checkout:</strong> {{ room.checkout_date }}</p>
+                                {% endif %}
+                                {% if room.status == 'Next Booking' %}
+                                    <p><strong class="text-slate-700">Guest:</strong> {{ room.guest_name }}</p>
+                                    <p><strong class="text-slate-700">Check-in:</strong> {{ room.checkin }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 pt-4 border-t border-gray-200">
+                        {% if room.status == 'Available' %}
+                            <button 
+                                class="w-full bg-green-600 text-white font-bold py-2 px-4 rounded-lg flex items-center justify-center gap-2 hover:bg-green-700 transition-colors duration-200 book-now-btn"
+                                data-modal="bookingModal"
+                                data-room-no="{{ room.room_no }}">
+                                <i class="fas fa-calendar-plus"></i>
+                                <span>Book Now</span>
+                            </button>
+                        {% elif room.status == 'Booked Today' %}
+                            <button class="w-full bg-red-400 text-white font-bold py-2 px-4 rounded-lg flex items-center justify-center gap-2 cursor-not-allowed opacity-70">
+                                <i class="fas fa-bed"></i>
+                                {% if room.checkedin and room.willcheckout != True %}
+                                <span>Checked In</span>
+                                {% elif room.willcheckout == True and room.checkedout != True %}
+                                <span>
+                                    Expected to Check Out
+                                </span>
+                                {% elif room.checkedout == True %}
+                                <span>Checked Out</span>
+
+                                {% else %}
+                                <span>Occupied</span>
+                                {% endif %}
+                            </button>
+                            <!-- button to book -->
+                             {% if room.checkedout == True %}
+                            <button class="w-full bg-green-600 text-white font-bold py-2 my-5 px-4 rounded-lg flex items-center justify-center gap-2 hover:bg-blue-700 transition-colors duration-200 book-now-btn"
+                                data-modal="bookingModal"
+                                data-room-no="{{ room.room_no }}">
+                                <i class="fas fa-calendar-plus"></i>
+                                <span>New Booking</span>
+                            </button>
+                            {% endif %}
+                              
+                            
+                        {% else %}
+                            <button class="w-full bg-gray-400 text-white font-bold py-2 px-4 rounded-lg flex items-center justify-center gap-2 cursor-not-allowed opacity-70">
+                                <i class="fas fa-clock"></i>
+                                <span>Unavailable</span>
+                            </button>
+                        {% endif %}
+                    </div>
+                </article>
+                {% endfor %}
+                
+            </div> 
+        </main>
+        
+    <!-- Booking Modal -->
+    <div id="bookingModal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 opacity-0 pointer-events-none" role="dialog" aria-modal="true" aria-labelledby="bookingModalTitle">
+        <div class="bg-white rounded-xl p-6 w-full max-w-md">
+            <div class="flex justify-between items-center mb-4">
+                <h3 id="bookingModalTitle" class="text-xl font-bold text-slate-900">Book Room <span id="bookingRoomNumber" class="text-blue-600"></span></h3>
+                <button type="button" class="close-modal text-gray-500 hover:text-gray-800"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="bookingForm" method="POST" action="{% url 'add_booking_admin_room_wise' %}">
+                {% csrf_token %}
+                <input type="hidden" id="bookingRoomIdInput" name="room_no">
+                <input type="hidden" id="bookingRoomIdInput" name="room_id">
+                <div class="mb-4">
+                    <label for="guestName" class="block text-sm mb-1 text-gray-700">Guest Name</label>
+                    <input type="text" id="guestName" name="guest_name" class="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2" required>
+                </div>
+                <div class="mb-4">
+                    <label for="guestNumber" class="block text-sm mb-1 text-gray-700">Guest Phone Number</label>
+                    <input type="tel" id="guestNumber" name="guest_number" class="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2" required>
+                </div>
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="checkinDate" class="block text-sm mb-1 text-gray-700">Check-in Date</label>
+                        <input type="date" id="checkinDate" name="checkin_date" class="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2" required>
+                    </div>
+                    <div>
+                        <label for="checkoutDate" class="block text-sm mb-1 text-gray-700">Check-out Date</label>
+                        <input type="date" id="checkoutDate" name="checkout_date" class="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2" required>
+                    </div>
+                </div>
+                <div class="flex justify-end space-x-3 mt-6">
+                    <button type="button" class="close-modal bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-lg">Cancel</button>
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">Confirm Booking</button>
+                </div>
+            </form>
+        </div>
+    </div>
+        
+    <div id="addRoomModal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 opacity-0 pointer-events-none" role="dialog" aria-modal="true" aria-labelledby="addRoomModalTitle">
+        <div class="bg-white rounded-xl p-6 w-full max-w-md">
+            <div class="flex justify-between items-center mb-4">
+                <h3 id="addRoomModalTitle" class="text-xl font-bold text-slate-900">Add New Room</h3>
+                <button type="button" class="close-modal text-gray-500 hover:text-gray-800"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="addRoomForm" method="POST" enctype="multipart/form-data" action="">
+                {% csrf_token %}
+                <div class="mb-4"><label for="roomName" class="block text-sm mb-1">Room Name</label><input type="text" id="roomName" name="title" class="w-full bg-gray-100 border rounded-lg px-4 py-2" required></div>
+                <div class="mb-4"><label for="roomType" class="block text-sm mb-1">Room Type</label><select id="roomType" name="room_type" class="w-full bg-gray-100 border rounded-lg px-4 py-2"><option>Standard</option><option>Deluxe</option><option>Suite</option></select></div>
+                <div class="mb-4"><label for="roomPrice" class="block text-sm mb-1">Price/Night ($)</label><input type="number" id="roomPrice" name="price" class="w-full bg-gray-100 border rounded-lg px-4 py-2" required></div>
+                <div class="mb-4"><label for="roomDesc" class="block text-sm mb-1">Description</label><textarea id="roomDesc" name="desc" rows="3" class="w-full bg-gray-100 border rounded-lg px-4 py-2" required></textarea></div>
+                <input type="file" id="imageFile" name="imageFile" accept="image/*" multiple style="display:none;">
+                <div id="file-upload-area" class="border-2 border-dashed p-4 cursor-pointer text-center">
+                    <i class="fas fa-cloud-upload-alt text-gray-400 text-2xl mb-2"></i>
+                    <p>Click to upload</p>
+                </div>
+                <div class="flex justify-end space-x-3 mt-6">
+                    <input type="text" name="add" hidden value="add">
+                    <button type="button" class="close-modal bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-lg">Cancel</button>
+                    <button type="submit"  class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">Save Room</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="editRoomModal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 opacity-0 pointer-events-none" role="dialog" aria-modal="true" aria-labelledby="editRoomModalTitle">
+        <div class="bg-white rounded-xl p-6 w-full max-w-md">
+            <div class="flex justify-between items-center mb-4">
+                <h3 id="editRoomModalTitle" class="text-xl font-bold text-slate-900">Edit Room</h3>
+                <button type="button" class="close-modal text-gray-500 hover:text-gray-800"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="editRoomForm" method="POST" enctype="multipart/form-data" action="">
+                {% csrf_token %}
+                <div class="mb-4"><label for="editRoomName" class="block text-sm mb-1">Room Name</label><input type="text" id="editRoomName" name="title" class="w-full bg-gray-100 border rounded-lg px-4 py-2" required></div>
+                <div class="mb-4"><label for="editRoomType" class="block text-sm mb-1">Room Type</label><select id="editRoomType" name="room_type" class="w-full bg-gray-100 border rounded-lg px-4 py-2"><option>Standard</option><option>Deluxe</option><option>Suite</option></select></div>
+                <div class="mb-4"><label for="editRoomPrice" class="block text-sm mb-1">Price/Night ($)</label><input type="number" id="editRoomPrice" name="price" class="w-full bg-gray-100 border rounded-lg px-4 py-2" required></div>
+                <div class="mb-4"><label for="editRoomDesc" class="block text-sm mb-1">Description</label><textarea id="editRoomDesc" name="desc" rows="3" class="w-full bg-gray-100 border rounded-lg px-4 py-2" required></textarea></div>
+                <div class="mb-4">
+                    <label class="block text-sm mb-1">Current Images</label>
+                    <div id="currentImages" class="flex space-x-2 overflow-x-auto"></div>
+                </div>
+                <input type="file" id="editImageFile" name="imageFile" accept="image/*" multiple style="display:none;">
+                <div id="edit-file-upload-area" class="border-2 border-dashed p-4 cursor-pointer text-center">
+                    <i class="fas fa-cloud-upload-alt text-gray-400 text-2xl mb-2"></i>
+                    <p>Click to upload</p>
+                </div>
+                <div class="flex justify-end space-x-3 mt-6">
+                    <input type="text" name="edit" hidden value="edit">
+                    <input type="text" id="editRoomId" name="room_id" hidden>
+                    <button type="button" class="close-modal bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-lg">Cancel</button>
+                    <button type="submit"  class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Modal Functionality
+    const openModal = (modal) => modal.classList.remove('opacity-0', 'pointer-events-none');
+    const closeModal = (modal) => modal.classList.add('opacity-0', 'pointer-events-none');
+
+    document.body.addEventListener('click', (e) => {
+        const openTrigger = e.target.closest('[data-modal]');
+        if (openTrigger) {
+            const modal = document.getElementById(openTrigger.dataset.modal);
+            openModal(modal);
+
+            // If the booking button was clicked, populate the room number
+            if (openTrigger.classList.contains('book-now-btn')) {
+                const roomNo = openTrigger.dataset.roomNo;
+                document.getElementById('bookingRoomNumber').textContent = roomNo;
+                document.getElementById('bookingRoomIdInput').value = roomNo;
+                
+            }
+        }
+
+        const closeTrigger = e.target.closest('.close-modal');
+        const modal = e.target.closest('.modal');
+        if (closeTrigger || (modal && e.target === modal)) closeModal(modal || closeTrigger.closest('.modal'));
+    });
+
+    // File Upload Area ✅
+    const fileUploadArea = document.getElementById('file-upload-area');
+const imageFileInput = document.getElementById('imageFile');
+
+fileUploadArea.addEventListener('click', () => {
+    imageFileInput.click();
+});
+
+imageFileInput.addEventListener('change', () => {
+    if (imageFileInput.files.length > 0) {
+        let filesList = Array.from(imageFileInput.files).map(f => f.name).join(", ");
+        fileUploadArea.innerHTML = `<p class="text-green-600">Selected: ${filesList}</p>`;
+    } else {
+        fileUploadArea.innerHTML = `<i class="fas fa-cloud-upload-alt text-gray-400 text-2xl mb-2"></i><p>Click to upload</p>`;
+    }
+});
+
+});
+function editRoom(id) {
+    // Get the room card element
+    console.log(id);
+    const roomCard = document.getElementById(id);
+    if (!roomCard) return;
+
+    // Extract room details
+    const title = roomCard.querySelector('h3').innerText;
+    const roomType = roomCard.querySelector('p.text-gray-500').innerText;
+    const priceText = roomCard.querySelector('p.text-xl').innerText;
+    const price = priceText.replace('$', '').replace('/night', '').trim();
+    const desc = roomCard.querySelector('p.text-sm') ? roomCard.querySelector('p.text-sm').innerText : '';
+    // images
+    const images = roomCard.querySelectorAll('.room-image');
+    const currentImagesContainer = document.getElementById('currentImages');
+    currentImagesContainer.innerHTML = ''; // Clear previous images
+    images.forEach(img => {
+        const imgClone = img.cloneNode();
+        imgClone.classList.remove('absolute', 'top-0', 'left-0', 'opacity-0');
+        imgClone.classList.add('w-20', 'h-20', 'object-cover', 'rounded-lg');
+        currentImagesContainer.appendChild(imgClone);
+    });
+    // Set the room ID in a hidden input
+    document.getElementById('editRoomId').value = id;
+
+    // Populate the edit form
+    document.getElementById('editRoomName').value = title;
+    document.getElementById('editRoomType').value = roomType;
+    document.getElementById('editRoomPrice').value = price;
+    document.getElementById('editRoomDesc').value = desc;
+
+    // Open the edit modal
+    const editModal = document.getElementById('editRoomModal');
+    editModal.classList.remove('opacity-0', 'pointer-events-none');
+}
+
+
+
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Find all slider containers on the page
+    const sliders = document.querySelectorAll('.room-slider');
+
+    sliders.forEach(slider => {
+        const images = slider.querySelectorAll('.room-image');
+        const prevButton = slider.querySelector('.slider-prev');
+        const nextButton = slider.querySelector('.slider-next');
+        let currentIndex = 0;
+
+        // Skip if there's only one image or no images
+        if (images.length <= 1) {
+            if (prevButton) prevButton.style.display = 'none';
+            if (nextButton) nextButton.style.display = 'none';
+            return;
+        }
+
+        function showImage(index) {
+            // Hide all images by making them transparent and non-interactive
+            images.forEach((img, i) => {
+                img.classList.add('opacity-0', 'pointer-events-none', 'absolute');
+                img.classList.remove('opacity-100');
+            });
+
+            // Show the target image
+            const activeImage = images[index];
+            activeImage.classList.remove('opacity-0', 'pointer-events-none', 'absolute');
+            activeImage.classList.add('opacity-100');
+        }
+
+        prevButton.addEventListener('click', () => {
+            // Decrease index, loop to the end if at the start
+            currentIndex = (currentIndex > 0) ? currentIndex - 1 : images.length - 1;
+            showImage(currentIndex);
+        });
+
+        nextButton.addEventListener('click', () => {
+            // Increase index, loop to the start if at the end
+            currentIndex = (currentIndex < images.length - 1) ? currentIndex + 1 : 0;
+            showImage(currentIndex);
+        });
+
+        // Initialize the first image to be visible
+        showImage(0);
+    });
+});
+// for the booking form add conditions
+document.getElementById('bookingForm').addEventListener('submit', function(event) {
+    const checkinDate = new Date(document.getElementById('checkinDate').value);
+    const checkoutDate = new Date(document.getElementById('checkoutDate').value);
+    const today = new Date();
+    today.setHours(0,0,0,0); // Set to midnight for accurate comparison
+
+    if (checkinDate < today) {
+        alert('Check-in date cannot be in the past.');
+        event.preventDefault();
+        return;
+    }
+    if (checkoutDate <= checkinDate) {
+        alert('Check-out date must be after check-in date.');
+        event.preventDefault();
+        return;
+    }
+});
+</script>
+{% endblock %}
+
+
+</body>
+</html>
+

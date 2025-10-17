@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Request Confirmation</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f7f6;">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+            <td style="padding: 20px 0;">
+                <table align="center" border="0" cellpadding="0" cellspacing="0" width="600" style="border-collapse: collapse; background-color: #ffffff; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                    
+                    <tr>
+                        <td align="center" style="background-color: #007bff; padding: 30px 20px; color: #ffffff; border-top-left-radius: 10px; border-top-right-radius: 10px;">
+                            <h1 style="margin: 0; font-size: 28px;">New Booking Request!</h1>
+                            <p style="margin: 10px 0 0; font-size: 16px;">A reservation is awaiting your approval. 🛎️</p>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="padding: 40px 30px;">
+                            <h2 style="color: #333333; margin-top: 0;">Hi Aijaz</h2>
+                            <p style="color: #555555; line-height: 1.6;">Exciting news! We have a new booking request that's ready for your review. Please look over the details below and let us know if we should roll out the welcome mat!</p>
+                            
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="margin-top: 25px; border: 1px solid #dddddd; border-radius: 5px;">
+                                <tr>
+                                    <td style="padding: 15px; background-color: #f9f9f9; border-bottom: 1px solid #dddddd; width: 30%;">
+                                        <strong style="color: #333333;">Guest Name:</strong>
+                                    </td>
+                                    <td style="padding: 15px; border-bottom: 1px solid #dddddd; text-align: left; color: #555;">
+                                        {{guest}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 15px; background-color: #f9f9f9; border-bottom: 1px solid #dddddd;">
+                                        <strong style="color: #333333;">Guests:</strong>
+                                    </td>
+                                    <td style="padding: 15px; border-bottom: 1px solid #dddddd; text-align: left; color: #555;">
+                                        {{guest_no}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 15px; background-color: #f9f9f9; border-bottom: 1px solid #dddddd;">
+                                        <strong style="color: #333333;">Check-in:</strong>
+                                    </td>
+                                    <td style="padding: 15px; border-bottom: 1px solid #dddddd; text-align: left; color: #555;">
+                                       {{checkin}}
+                                    </td>
+                                </tr>
+                                 <tr>
+                                    <td style="padding: 15px; background-color: #f9f9f9;">
+                                        <strong style="color: #333333;">Check-out:</strong>
+                                    </td>
+                                    <td style="padding: 15px; text-align: left; color: #555;">
+                                        {{checkout}}
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="padding: 0 30px 40px;">
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                <tr>
+                                    <td align="center" width="48%" style="padding: 0 1%;">
+                                        <a href="{{confirmlink}}" style="display: block; padding: 15px 25px; background-color: #28a745; color: #ffffff; text-decoration: none; border-radius: 5px; font-size: 16px; font-weight: bold; text-align: center;">
+                                            ✅ Confirm Booking
+                                        </a>
+                                    </td>
+                                    <td align="center" width="48%" style="padding: 0 1%;">
+                                        <a href="{{declinelink}}" style="display: block; padding: 15px 25px; background-color: #dc3545; color: #ffffff; text-decoration: none; border-radius: 5px; font-size: 16px; font-weight: bold; text-align: center;">
+                                            ❌ Decline Booking
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td align="center" style="padding: 20px 30px; background-color: #eeeeee; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
+                            <p style="margin: 0; color: #888888; font-size: 12px;">This is an automated message. Thank you for your speedy review!</p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

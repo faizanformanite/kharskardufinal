@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore Nearby - Khar Skardu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+<link rel="apple-touch-icon" sizes="180x180" href="/static/icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/static/icons/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/static/icons/favicon-16x16.png">
+<link rel="manifest" href="/static/icons/site.webmanifest">
+    <style>
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: #FBF5EE;
+        }
+        .font-playfair {
+            font-family: 'Playfair Display', serif;
+        }
+        .wooden-bg {
+            /* Fallback background color */
+            background-color: #c97a40;
+
+            /*
+               The wood effect is created by layering multiple gradients.
+               1. The bottom layer is a simple vertical gradient that creates the base color variation.
+               2. The middle and top layers are repeating gradients that create the thin, darker lines for the wood grain.
+            */
+            background-image:
+                /* Grain Layer 1: Faint, thin, semi-transparent dark lines */
+                repeating-linear-gradient(90deg, hsla(0,0%,0%,.1) 0, hsla(0,0%,0%,.1) 1px, transparent 1px, transparent 40px),
+
+                /* Grain Layer 2: Wider, slightly more subtle lines to add depth */
+                repeating-linear-gradient(90deg, hsla(0,0%,0%,.05) 0, hsla(0,0%,0%,.05) 2px, transparent 2px, transparent 60px),
+
+                /* Base Color Layer: A gradient from a lighter to a darker orange-brown */
+                linear-gradient(to bottom, #d28c5a, #b06b3e);
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 2rem;
+            left: -1.05rem;
+            width: 20px;
+            height: 20px;
+            background-color: #fff;
+            border: 4px solid #854d0e;
+            border-radius: 50%;
+            z-index: 1;
+        }
+        .hero-bg {
+            background-image: url('https://kharskardu.com/wp-content/uploads/2025/05/PHOTO-2025-03-27-20-01-20-1024x725-1.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <main id="main-content">
+        <header class="relative text-white overflow-hidden h-[50vh]">
+            <div class="absolute top-0 left-0 w-full h-full hero-bg"></div>
+            <div class="absolute top-0 left-0 w-full h-full bg-black bg-opacity-60 z-10"></div>
+
+            <div class="relative z-20 flex flex-col h-full">
+                <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+                    <a href="{% url 'home' %}" class="font-playfair text-2xl font-bold">Khar Skardu</a>
+                    <a href="{% url 'home' %}" class="bg-amber-800 hover:bg-amber-900 text-white font-bold py-2 px-4 rounded-lg transition-colors text-sm">← Back to Home</a>
+                </nav>
+                <div class="flex-grow flex items-center justify-center text-center">
+                    <div class="container mx-auto px-6">
+                        <h1 class="font-playfair text-4xl md:text-6xl font-bold leading-tight">Explore the Surroundings</h1>
+                        <p class="mt-4 text-lg md:text-xl text-amber-100">Your basecamp for adventure in the heart of the Karakoram.</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <section id="nearby" class="py-20 bg-FBF5EE">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="font-playfair text-3xl md:text-4xl font-bold text-amber-900">Moments Away From Khar</h2>
+                    <p class="mt-2 text-gray-600 max-w-2xl mx-auto">From essential hubs to iconic landmarks, the best of Skardu is just a short, scenic drive away.</p>
+                </div>
+                
+                <div class="relative max-w-3xl mx-auto pl-10">
+                    <div class="absolute left-4 top-8 bottom-8 w-1 bg-amber-200 rounded"></div>
+
+                    <div class="relative mb-12 timeline-item">
+                        <div class="bg-white p-6 rounded-xl shadow-lg grid md:grid-cols-3 gap-6 items-center">
+                            <div class="md:col-span-1">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/PIA_rendezvous-edit.jpg/500px-PIA_rendezvous-edit.jpg" class="rounded-lg shadow-md w-full h-32 object-cover" alt="Skardu Airport runway with mountains">
+                            </div>
+                            <div class="md:col-span-2">
+                                <span class="font-bold text-amber-800 text-sm">15 MINUTES DRIVE</span>
+                                <h3 class="font-playfair text-2xl font-bold text-gray-800 mt-1">Skardu Airport</h3>
+                                <p class="text-gray-600 mt-2 text-sm">Your journey begins and ends with ease, just a short drive from our tranquil retreat.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="relative mb-12 timeline-item">
+                        <div class="bg-white p-6 rounded-xl shadow-lg grid md:grid-cols-3 gap-6 items-center">
+                             <div class="md:col-span-1">
+                                <img src="https://wpassets.graana.com/blog/wp-content/uploads/2023/09/Resort-shadow-in-the-lake-in-the-Gilgit-Baltistan-region-of-Pakistan-Image-1000x500-1.jpg" class="rounded-lg shadow-md w-full h-32 object-cover" alt="Shangrila Resort at Lower Kachura Lake">
+                            </div>
+                            <div class="md:col-span-2">
+                                <span class="font-bold text-amber-800 text-sm">20 MINUTES DRIVE</span>
+                                <h3 class="font-playfair text-2xl font-bold text-gray-800 mt-1">Kachura Lakes</h3>
+                                <p class="text-gray-600 mt-2 text-sm">Discover the famed Shangrila and the pristine, serene waters of Upper Kachura Lake.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="relative mb-12 timeline-item">
+                        <div class="bg-white p-6 rounded-xl shadow-lg grid md:grid-cols-3 gap-6 items-center">
+                            <div class="md:col-span-1">
+                                <img src="https://www.commonwealthheritage.org/wp-content/uploads/2022/12/shigar_serena_exterior.jpg" class="rounded-lg shadow-md w-full h-32 object-cover" alt="Historic Shigar Fort">
+                            </div>
+                            <div class="md:col-span-2">
+                                <span class="font-bold text-amber-800 text-sm">35 MINUTES DRIVE</span>
+                                <h3 class="font-playfair text-2xl font-bold text-gray-800 mt-1">Shigar Fort</h3>
+                                <p class="text-gray-600 mt-2 text-sm">Step back in time at this beautifully restored 17th-century fort and heritage hotel.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="relative mb-12 timeline-item">
+                        <div class="bg-white p-6 rounded-xl shadow-lg grid md:grid-cols-3 gap-6 items-center">
+                            <div class="md:col-span-1">
+                                <img src="https://miro.medium.com/v2/1*-E_XpxeLNOy9lDWWAk5hng.jpeg" class="rounded-lg shadow-md w-full h-32 object-cover" alt="Lush green Basho Valley">
+                            </div>
+                            <div class="md:col-span-2">
+                                <span class="font-bold text-amber-800 text-sm">2 HOURS DRIVE</span>
+                                <h3 class="font-playfair text-2xl font-bold text-gray-800 mt-1">Basho Valley</h3>
+                                <p class="text-gray-600 mt-2 text-sm">A perfect day trip to a paradise of lush meadows, dense forests, and pristine streams.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="relative mb-12 timeline-item">
+                        <div class="bg-white p-6 rounded-xl shadow-lg grid md:grid-cols-3 gap-6 items-center">
+                            <div class="md:col-span-1">
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSL6Hexh7fbHJ4mgMaEcdFLrbJhlrNHp0jRsQ&s" class="rounded-lg shadow-md w-full h-32 object-cover" alt="Majestic Khaplu Fort">
+                            </div>
+                            <div class="md:col-span-2">
+                                <span class="font-bold text-amber-800 text-sm">3 HOURS DRIVE</span>
+                                <h3 class="font-playfair text-2xl font-bold text-gray-800 mt-1">Khaplu Fort</h3>
+                                <p class="text-gray-600 mt-2 text-sm">Explore the former royal palace, an outstanding example of Tibetan-inspired architecture.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section id="attractions" class="py-20 bg-amber-50">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="font-playfair text-3xl md:text-4xl font-bold text-amber-900">Wonders of Gilgit-Baltistan</h2>
+                    <div class="w-24 h-1 bg-amber-800 mx-auto mt-4 rounded"></div>
+                    <p class="mt-4 text-gray-600 max-w-2xl mx-auto">Venture further to witness the legendary landscapes that define Pakistan's northern jewel.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 auto-rows-[24rem]">
+
+                    <a href="#" class="relative rounded-xl overflow-hidden shadow-lg group col-span-1 sm:col-span-2 lg:row-span-2 block transform hover:-translate-y-2 transition-transform duration-300">
+                        <img src="https://media.istockphoto.com/id/528152271/photo/beautiful-landscape-of-hunza-valley-in-autumn-season.jpg?s=612x612&w=0&k=20&c=qLEQ-6ToK3TZ0ybLgg_4bHumzioC5dGxZ9PZPAkQsRA=" alt="Hunza Valley" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 p-6 md:p-8 transition-all duration-300 ease-in-out group-hover:bottom-4">
+                            <h3 class="font-playfair text-3xl font-bold text-white">Hunza Valley</h3>
+                            <p class="text-amber-100 mt-2 text-sm max-w-md opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-full transition-all duration-500 ease-in-out delay-100">A fabled valley of unparalleled beauty, home to ancient forts, vibrant culture, and the majestic Rakaposhi peak.</p>
+                        </div>
+                    </a>
+
+                    <a href="#" class="relative rounded-xl overflow-hidden shadow-lg group col-span-1 sm:col-span-1 block transform hover:-translate-y-2 transition-transform duration-300">
+                        <img src="https://media.istockphoto.com/id/1325868576/photo/panoramic-attabad-lake-vivid-traditional-boat-and-high-mountain-in-gojal-hunza-valley-of.webp?a=1&b=1&s=612x612&w=0&k=20&c=dV7XkqQUONnNClRtDK_Y424vz7HFIIRAUv5Pe2ymO_I=" alt="Attabad Lake" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 p-6 transition-all duration-300 ease-in-out group-hover:bottom-4">
+                            <h3 class="font-playfair text-2xl font-bold text-white">Attabad Lake</h3>
+                            <p class="text-amber-100 mt-1 text-sm max-w-md opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-full transition-all duration-500 ease-in-out delay-100">A stunning turquoise gem offering unforgettable boating experiences.</p>
+                        </div>
+                    </a>
+
+                    <a href="#" class="relative rounded-xl overflow-hidden shadow-lg group col-span-1 sm:col-span-1 block transform hover:-translate-y-2 transition-transform duration-300">
+                        <img src="https://media.gettyimages.com/id/505080108/photo/deosai.jpg?s=612x612&w=0&k=20&c=q0rS1UPLv9ewctjXhOOqO_37msmG3zXXAushEZ0dB50=" alt="Deosai National Park" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 p-6 transition-all duration-300 ease-in-out group-hover:bottom-4">
+                            <h3 class="font-playfair text-2xl font-bold text-white">Deosai Park</h3>
+                            <p class="text-amber-100 mt-1 text-sm max-w-md opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-full transition-all duration-500 ease-in-out delay-100">The 'Land of Giants', a high-altitude sanctuary for wildlife.</p>
+                        </div>
+                    </a>
+                    
+                    <a href="#" class="relative rounded-xl overflow-hidden shadow-lg group col-span-1 sm:col-span-2 block transform hover:-translate-y-2 transition-transform duration-300">
+                        <img src="https://preview.redd.it/passu-cones-hunza-valley-pakistan-v0-r1i88zc4n77e1.png?auto=webp&s=830cdfb5f59101b9fe2d408c9a4c474783f935fb" alt="Passu Cones" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 p-6 transition-all duration-300 ease-in-out group-hover:bottom-4">
+                            <h3 class="font-playfair text-2xl font-bold text-white">Passu Cones</h3>
+                            <p class="text-amber-100 mt-1 text-sm max-w-md opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-full transition-all duration-500 ease-in-out delay-100">Gaze upon the dramatic, cathedral-like peaks of a geological masterpiece.</p>
+                        </div>
+                    </a>
+
+                    <a href="#" class="relative rounded-xl overflow-hidden shadow-lg group col-span-1 sm:col-span-1 lg:col-span-2 block transform hover:-translate-y-2 transition-transform duration-300">
+                         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Nanga_Parbat_The_Killer_Mountain.jpg/1324px-Nanga_Parbat_The_Killer_Mountain.jpg" alt="Fairy Meadows" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 p-6 transition-all duration-300 ease-in-out group-hover:bottom-4">
+                            <h3 class="font-playfair text-2xl font-bold text-white">Fairy Meadows</h3>
+                            <p class="text-amber-100 mt-1 text-sm max-w-md opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-full transition-all duration-500 ease-in-out delay-100">An ethereal green pasture with breathtaking views of Nanga Parbat.</p>
+                        </div>
+                    </a>
+
+                </div>
+            </div>
+        </section>
+
+       <footer class="wooden-bg text-white">
+            <div class="container mx-auto px-6 py-12">
+                <div class="grid md:grid-cols-4 gap-8">
+                    <div>
+                        <h3 class="font-playfair text-2xl font-bold">Khar Skardu</h3>
+                        <p class="mt-2 text-amber-100 text-sm">Your home away from home, steeped in tradition.</p>
+                    </div>
+                     <div>
+                        <h4 class="font-bold text-lg text-amber-100">Quick Links</h4>
+                        <ul class="mt-4 space-y-2 text-sm">
+                            <li><a href="#about" class="hover:underline">About Us</a></li>
+                            <li><a href="#gallery" class="hover:underline">Gallery</a></li>
+                            <li><a href="#blog" class="hover:underline">Experiences</a></li>
+                            <li><a href="#" class="hover:underline">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                         <h4 class="font-bold text-lg text-amber-100">Contact</h4>
+                        <ul class="mt-4 space-y-2 text-sm">
+                            <li><p>Khar Skardu</p></li>
+                            <li><p>info@kharskardu.com</p></li>
+                            <li><p>+92 339 1119555</p></li>
+                            <li><p>+92 355 4779438</p></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-lg text-amber-100">Follow Us</h4>
+                        <div class="flex space-x-4 mt-4">
+                            <a href="https://www.facebook.com/p/Khar-Hotel-Skardu-61575762743470/" class="hover:underline">Facebook</a>
+                            <a href="https://www.instagram.com/kharskardu/?hl=en" class="hover:underline">Instagram</a>
+                            <a href="https://api.whatsapp.com/send?phone=923554779438" class="hover:underline">WhatsApp</a>
+                            </div>
+                    </div>
+                </div>
+                <div class="mt-8 border-t border-amber-700 pt-6 text-center text-sm text-amber-200">
+                    <p>© 2025 The Khar Skardu. All Rights Reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+</body>
+</html>

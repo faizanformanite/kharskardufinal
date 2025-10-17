@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Confirmed - Khar Skardu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+<link rel="apple-touch-icon" sizes="180x180" href="/static/icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/static/icons/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/static/icons/favicon-16x16.png">
+<link rel="manifest" href="/static/icons/site.webmanifest">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <style>
+        body { font-family: 'Lato', sans-serif; background-color: #FBF5EE; }
+        .font-playfair { font-family: 'Playfair Display', serif; }
+        /* Custom styles for the ticket */
+        .ticket-detail-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem; /* 12px */
+        }
+        .ticket-detail-item i {
+            color: #9A3412; /* amber-800 */
+            width: 20px; /* Ensures alignment */
+            text-align: center;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    
+    
+    <main class="container mx-auto px-6 py-12 md:py-20 flex flex-col justify-center items-center">
+        <!-- The main card that will be downloaded as an image -->
+        
+  <div id="success-card" style="background-color: #ffffff; border-radius: 1rem; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); width: 100%;">
+                    <div style="padding: 2.5rem; background-color: #fffbeb; border-top-left-radius: 1rem; border-top-right-radius: 1rem; text-align: center; border-bottom: 2px dashed #fde68a;">
+                        <i class="fas fa-check-circle" style="color: #22c55e; font-size: 3rem;"></i>
+                        <h1 style="font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 700; color: #78350f; margin-top: 1rem;">Booking Confirmed!</h1>
+                        <p style="color: #4b5563; margin-top: 0.75rem; font-size: 1.125rem;">Thank you, {{details.guestName}}. Your stay at Khar Skardu is booked.</p>
+                    </div>
+                    <div style="padding: 2.5rem;">
+                        <div style="display: flex; gap: 2rem; flex-direction: row;">
+                            <div style="flex-grow: 1; text-align: left;">
+                                <h2 style="font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: #374151; margin-bottom: 1.5rem;">Your Itinerary</h2>
+                                <div style="display: grid; gap: 1.25rem;">
+                                    <div style="display: flex; align-items: center; gap: 0.75rem;"><i class="fas fa-hashtag fa-fw" style="color: #92400e;"></i><div><p style="font-size: 0.875rem; color: #6b7280;">Booking Reference</p><p style="font-weight: 600; font-size: 1.125rem; color: #92400e;" id="ref-number">{{details.refNumber}}</p></div></div>
+                                    <div style="display: flex; align-items: center; gap: 0.75rem;"><i class="fas fa-user fa-fw" style="color: #92400e;"></i><div><p style="font-size: 0.875rem; color: #6b7280;">Guest</p><p style="font-weight: 600;color:#92400e;">{{details.guestName}}</p></div></div>
+                                    <div style="display: flex; align-items: center; gap: 0.75rem;"><i class="fas fa-door-open fa-fw" style="color: #92400e;"></i><div><p style="font-size: 0.875rem; color: #6b7280;">Room</p><p style="font-weight: 600;color:#92400e;">{{details.roomName}}</p></div></div>
+                                    <div style="display: flex; align-items: center; gap: 0.75rem;"><i class="fas fa-calendar-check fa-fw" style="color: #92400e;"></i><div><p style="font-size: 0.875rem; color: #6b7280;">Check-in</p><p style="font-weight: 600;color:#92400e;">{{details.checkinDate}}</p></div></div>
+                                    <div style="display: flex; align-items: center; gap: 0.75rem;"><i class="fas fa-calendar-times fa-fw" style="color: #92400e;"></i><div><p style="font-size: 0.875rem; color: #6b7280;">Check-out</p><p style="font-weight: 600;color:#92400e;">{{details.checkoutDate}}</p></div></div>
+                                </div>
+                            </div>
+                            <div style="width: 14rem; flex-shrink: 0; text-align: center; background-color: #f9fafb; padding: 1.5rem; border-radius: 0.5rem;">
+                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=Ref:${details.refNumber}" alt="Booking QR Code" style="margin: auto;">
+                                <p style="font-size: 0.75rem; color: #6b7280; margin-top: 0.5rem;">Scan for booking details</p>
+                                <div style="margin-top: 1rem; border-top: 1px solid #e5e7eb; padding-top: 1rem;">
+                                    <p style="font-size: 0.875rem; color: #6b7280;">Total Amount</p>
+                                    <p style="font-weight: 600; font-size: 1.5rem; color: #78350f;">{{details.totalAmount}}</p>
+                                    <p style="font-size: 0.75rem; color: #6b7280;">(Pay at Property)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="background-color: #1f2937; color: #ffffff; padding: 1.5rem; border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem; text-align: center; font-size: 0.875rem;">
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                            <i class="fas fa-car-side" style="color: #fcd34d;"></i>
+                            <p><strong>Note:</strong> Paid airport pick & drop service is available. Please contact us to arrange.</p>
+                        </div>
+                        <p style="margin-top: 0.5rem; opacity: 0.7;">{{details.hotelAddress}} | {{details.hotelContact}}</p>
+                    </div>
+                </div>
+        <!-- Buttons are now outside the main card to be excluded from download -->
+        <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4 w-full max-w-4xl" data-html2canvas-ignore="true">
+            <button id="download-ticket-btn" class="w-full sm:w-auto bg-amber-800 hover:bg-amber-900 text-white font-bold py-3 px-8 rounded-lg transition-colors text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
+                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>
+                Download Ticket
+            </button>
+            <a href="{%  url 'admin-rooms' %}" class="w-full sm:w-auto text-gray-600 hover:text-amber-800 font-medium transition-colors py-3 px-6">
+                Go to Rooms
+            </a>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const downloadButton = document.getElementById('download-ticket-btn');
+            
+            downloadButton.addEventListener('click', () => {
+                const ticketElement = document.getElementById('success-card');
+                const refNumber = document.getElementById('ref-number').textContent;
+
+                html2canvas(ticketElement, { scale: 2 }).then(canvas => {
+                    const link = document.createElement('a');
+                    link.download = `Booking_Ticket_${refNumber}.png`;
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+

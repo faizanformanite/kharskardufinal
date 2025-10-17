@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Pending - Khar Skardu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/icons/favicon-16x16.png">
+    <link rel="manifest" href="/static/icons/site.webmanifest">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        body { font-family: 'Lato', sans-serif; background-color: #FBF5EE; }
+        .font-playfair { font-family: 'Playfair Display', serif; }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <nav class="text-white px-6 py-4 flex justify-between items-center z-50 bg-black bg-opacity-50 backdrop-blur-sm shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="/" class="font-playfair text-2xl font-bold">{{ details.hotelName|default:"Khar Skardu" }}</a>
+            <div class="hidden md:flex space-x-6 items-center">
+                <a href="/" class="hover:text-amber-200 transition-colors">Home</a>
+                <a href="/rooms" class="hover:text-amber-200 transition-colors">Rooms</a>
+            </div>
+        </div>
+    </nav>
+    
+    <main class="container mx-auto px-6 py-12 md:py-20 flex flex-col justify-center items-center">
+        
+        <div id="pending-card" style="background-color: #ffffff; border-radius: 1rem; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); width: 100%; max-width: 48rem;">
+            <div style="padding: 2.5rem; background-color: #fff7ed; border-top-left-radius: 1rem; border-top-right-radius: 1rem; text-align: center; border-bottom: 2px dashed #fed7aa;">
+                <i class="fas fa-hourglass-half" style="color: #f59e0b; font-size: 3rem;"></i>
+                <h1 style="font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 700; color: #78350f; margin-top: 1rem;">Booking Pending!</h1>
+                <p style="color: #4b5563; margin-top: 0.75rem; font-size: 1.125rem;">Thank you, {{details.guestName}}. Your booking for Khar Skardu is awaiting review.</p>
+                 <p style="color: #6b7280; margin-top: 1rem;">We'll notify you by whatsapp as soon as it's confirmed.</p>
+            </div>
+            <div style="padding: 2.5rem;">
+                <h2 style="font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: #374151; margin-bottom: 1.5rem; text-align: center;">Your Request Details</h2>
+                <div style="display: grid; gap: 1.25rem; max-width: 28rem; margin: auto;">
+                    <div style="display: flex; align-items: center; gap: 0.75rem;"><i class="fas fa-hashtag fa-fw" style="color: #92400e; width: 20px; text-align: center;"></i><div><p style="font-size: 0.875rem; color: #6b7280;">Booking Reference</p><p style="font-weight: 600; font-size: 1.125rem; color: #92400e;">{{details.refNumber}}</p></div></div>
+                    <div style="display: flex; align-items: center; gap: 0.75rem;"><i class="fas fa-user fa-fw" style="color: #92400e; width: 20px; text-align: center;"></i><div><p style="font-size: 0.875rem; color: #6b7280;">Guest</p><p style="font-weight: 600;color:#92400e;">{{details.guestName}}</p></div></div>
+                    <div style="display: flex; align-items: center; gap: 0.75rem;"><i class="fas fa-door-open fa-fw" style="color: #92400e; width: 20px; text-align: center;"></i><div><p style="font-size: 0.875rem; color: #6b7280;">Room</p><p style="font-weight: 600;color:#92400e;">{{details.roomName}}</p></div></div>
+                    <div style="display: flex; align-items: center; gap: 0.75rem;"><i class="fas fa-calendar-check fa-fw" style="color: #92400e; width: 20px; text-align: center;"></i><div><p style="font-size: 0.875rem; color: #6b7280;">Check-in</p><p style="font-weight: 600;color:#92400e;">{{details.checkinDate}}</p></div></div>
+                    <div style="display: flex; align-items: center; gap: 0.75rem;"><i class="fas fa-calendar-times fa-fw" style="color: #92400e; width: 20px; text-align: center;"></i><div><p style="font-size: 0.875rem; color: #6b7280;">Check-out</p><p style="font-weight: 600;color:#92400e;">{{details.checkoutDate}}</p></div></div>
+                </div>
+            </div>
+             <div style="background-color: #1f2937; color: #ffffff; padding: 1.5rem; border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem; text-align: center; font-size: 0.875rem;">
+                <p style="opacity: 0.7;">{{details.hotelAddress}} | {{details.hotelContact}}</p>
+            </div>
+        </div>
+        
+    </main>
+
+</body>
+</html>

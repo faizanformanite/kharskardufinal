@@ -1,0 +1,150 @@
+{% extends 'adminportal/base.html' %}
+{% block adminbase %}
+<main class="flex-1 p-6 bg-white text-gray-900">
+    <header class="flex justify-between items-center mb-8">
+        <div>
+            <h1 class="text-2xl font-bold">Hotel Dashboard</h1>
+            <p class="text-gray-600">Welcome back, John. Here's what's happening today.</p>
+        </div>
+        <div class="flex items-center space-x-4">
+            <div class="relative">
+                <input type="text" placeholder="Search..." 
+                       class="bg-gray-100 border border-gray-300 rounded-lg pl-10 pr-4 py-2 w-64 focus:outline-none focus:ring-2 focus:ring-primary-500">
+                <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+            </div>
+            <button type="button" class="bg-gray-100 p-2 rounded-lg hover:bg-gray-200"><i class="fas fa-bell text-gray-700"></i></button>
+            <button type="button" class="bg-gray-100 p-2 rounded-lg hover:bg-gray-200"><i class="fas fa-cog text-gray-700"></i></button>
+        </div>
+    </header>
+
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-md fade-in-card" style="animation-delay: 100ms;">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-gray-600">Total Bookings</p>
+                    <h3 class="text-2xl font-bold mt-2">142</h3>
+                    <p class="text-green-600 text-sm mt-1"><i class="fas fa-arrow-up"></i> 12%</p>
+                </div>
+                <div class="bg-primary-500 p-3 rounded-lg"><i class="fas fa-calendar-check text-white"></i></div>
+            </div>
+        </div>
+
+        <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-md fade-in-card" style="animation-delay: 200ms;">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-gray-600">Available Rooms</p>
+                    <h3 class="text-2xl font-bold mt-2">86</h3>
+                    <p class="text-green-600 text-sm mt-1"><i class="fas fa-check-circle"></i> 68%</p>
+                </div>
+                <div class="bg-accent-500 p-3 rounded-lg"><i class="fas fa-bed text-white"></i></div>
+            </div>
+        </div>
+
+        <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-md fade-in-card" style="animation-delay: 300ms;">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-gray-600">Occupied Rooms</p>
+                    <h3 class="text-2xl font-bold mt-2">56</h3>
+                    <p class="text-yellow-600 text-sm mt-1"><i class="fas fa-exclamation-circle"></i> 5 check-outs</p>
+                </div>
+                <div class="bg-yellow-500 p-3 rounded-lg"><i class="fas fa-user-friends text-white"></i></div>
+            </div>
+        </div>
+
+        <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-md fade-in-card" style="animation-delay: 400ms;">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-gray-600">Revenue</p>
+                    <h3 class="text-2xl font-bold mt-2">$24,580</h3>
+                    <p class="text-green-600 text-sm mt-1"><i class="fas fa-arrow-up"></i> 18%</p>
+                </div>
+                <div class="bg-red-500 p-3 rounded-lg"><i class="fas fa-dollar-sign text-white"></i></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gallery Section -->
+    <div class="bg-white border border-gray-200 rounded-xl shadow-md p-6">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-xl font-bold">Gallery Management</h2>
+            <button type="button" class="bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg flex items-center" data-modal="addImageModal">
+                <i class="fas fa-plus mr-2"></i> Upload Image
+            </button>
+        </div>
+
+        <div id="galleryGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div class="gallery-item bg-gray-50 border border-gray-200 rounded-xl overflow-hidden shadow-md">
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=500" alt="Pool Area" class="w-full h-48 object-cover">
+                    <div class="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-60 flex items-center justify-center opacity-0 hover:opacity-100 transition">
+                        <button class="text-red-500"><i class="fas fa-trash text-2xl"></i></button>
+                    </div>
+                </div>
+                <div class="p-4"><h3 class="font-medium text-gray-800">Pool Area</h3></div>
+            </div>
+
+            {% for i in gallery %}
+            <div class="gallery-item bg-gray-50 border border-gray-200 rounded-xl overflow-hidden shadow-md">
+                <div class="relative">
+                    <img src="{{ i.image.url }}" alt="{{ i.title }}" class="w-full h-48 object-cover">
+                    <div class="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-60 flex items-center justify-center opacity-0 hover:opacity-100 transition">
+                        <button class="text-red-500"><i class="fas fa-trash text-2xl"></i></button>
+                    </div>
+                </div>
+                <div class="p-4"><h3 class="font-medium text-gray-800">{{ i.title }}</h3></div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</main>
+
+<!-- Modal -->
+<div id="addImageModal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 opacity-0 pointer-events-none" role="dialog" aria-modal="true" aria-labelledby="addImageModalTitle">
+    <div class="bg-white rounded-xl p-6 w-full max-w-md shadow-xl">
+        <div class="flex justify-between items-center mb-4">
+            <h3 id="addImageModalTitle" class="text-xl font-bold text-gray-800">Add New Image</h3>
+            <button type="button" class="close-modal text-gray-500 hover:text-gray-700"><i class="fas fa-times"></i></button>
+        </div>
+        <form id="addImageForm" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-4">
+                <label for="imageTitle" class="block text-sm mb-1 text-gray-700">Image Title</label>
+                <input type="text" id="imageTitle" name="title" class="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm mb-1 text-gray-700">Upload Image</label>
+                <div id="file-upload-area" class="border-2 border-dashed border-gray-400 rounded-lg p-4 text-center cursor-pointer hover:bg-gray-100">
+                    <i class="fas fa-cloud-upload-alt text-gray-500 text-2xl mb-2"></i>
+                    <p class="text-gray-700">Click to upload</p>
+                    <input type="file" id="imageFile" name="image" class="hidden" accept="image/*">
+                </div>
+            </div>
+            <div class="flex justify-end space-x-3 mt-6">
+                <button type="button" class="close-modal bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-lg text-gray-800">Cancel</button>
+                <button type="submit" class="bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg">Upload</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const openModal = (modal) => modal.classList.remove('opacity-0', 'pointer-events-none');
+    const closeModal = (modal) => modal.classList.add('opacity-0', 'pointer-events-none');
+
+    document.body.addEventListener('click', (e) => {
+        const openTrigger = e.target.closest('[data-modal]');
+        if (openTrigger) openModal(document.getElementById(openTrigger.dataset.modal));
+
+        const closeTrigger = e.target.closest('.close-modal');
+        const modal = e.target.closest('.modal');
+        if (closeTrigger || (modal && e.target === modal)) closeModal(modal || closeTrigger.closest('.modal'));
+    });
+
+    document.getElementById('file-upload-area').addEventListener('click', () => 
+        document.getElementById('imageFile').click()
+    );
+});
+</script>
+{% endblock %}

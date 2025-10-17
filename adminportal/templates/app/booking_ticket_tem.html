@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Khar Skardu - A traditional guesthouse offering a unique blend of comfort and culture in the heart of Skardu.">
+    <link rel="canonical" href="https://kharskardu.com/">
+    <meta name="robots" content="index, follow" />
+    <meta property="og:title" content="Khar Heritage Hotel Skardu | Traditional Baltistan Architecture & Scenic Views" />
+    <meta property="og:description" content="Experience the charm of Baltistan’s heritage at Khar Heritage Hotel Skardu. Nestled in a traditional stone-and-wood building with stunning mountain views." />
+    <meta property="og:image" content="https://kharskardu.com/static/images/bg1.webp" />
+    <meta property="og:url" content="https://kharskardu.com/" />
+    <title>Khar Skardu - Traditional Guesthouse</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap" rel="stylesheet">
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/icons/favicon-16x16.png">
+    <link rel="manifest" href="/static/icons/site.webmanifest">
+    
+<style>
+    /* ==============================================
+    CUSTOM ANIMATION STYLES ADDED
+    ==============================================
+    */
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slideInLeft {
+        from { opacity: 0; transform: translateX(-50px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes slideInRight {
+        from { opacity: 0; transform: translateX(50px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+    }
+    @keyframes glow {
+        0%, 100% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.3); }
+        50% { box-shadow: 0 0 35px rgba(255, 255, 255, 0.6); }
+    }
+    @keyframes scatter {
+        from { opacity: 0; transform: var(--start-transform); }
+        to { opacity: 1; transform: var(--end-transform); }
+    }
+
+    /* Helper classes for scroll animations */
+    .animate-on-scroll {
+        opacity: 0;
+        transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        transition-delay: var(--animation-delay, 0s);
+    }
+    .is-visible {
+        opacity: 1;
+        transform: none !important;
+    }
+
+    /* Navbar link hover effect */
+    .nav-link {
+        position: relative;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+    .nav-link::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        transform: scaleX(0);
+        height: 2px;
+        bottom: -4px;
+        left: 0;
+        background-color: #fef3c7; /* amber-100 */
+        transform-origin: bottom right;
+        transition: transform 0.3s ease-out;
+    }
+    .nav-link:hover::after {
+        transform: scaleX(1);
+        transform-origin: bottom left;
+    }
+
+    /* Modal styles */
+    .modal { display: none; position: fixed; z-index: 50; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.9); }
+    .modal-content { margin: auto; display: block; width: 80%; max-width: 700px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+    .close { position: absolute; top: 15px; right: 35px; color: #f1f1f1; font-size: 40px; font-weight: bold; transition: 0.3s; }
+    .close:hover, .close:focus { color: #bbb; text-decoration: none; cursor: pointer; }
+    
+    /* Base Styles */
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Lato', sans-serif; background-color: #FBF5EE; }
+    .font-playfair { font-family: 'Playfair Display', serif; }
+    .font-caveat { font-family: 'Caveat', cursive; }
+    .wooden-bg { background-image: url('https://www.transparenttextures.com/patterns/wood-pattern.png'), linear-gradient(to bottom, #6b4f4b, #543c38); background-color: #6b4f4b; }
+    
+    /* Hero Slideshow */
+    .hero-slideshow-image { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-size: cover; background-position: center; opacity: 0; transition: opacity 1.5s ease-in-out; z-index: 1; }
+    .hero-slideshow-image.active { opacity: 1; z-index: 2; }
+    .video-bg { background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('/static/images/logo.jpg'); background-size: cover; background-position: center; }
+    input[type="date"]::-webkit-calendar-picker-indicator { cursor: pointer; filter: invert(0.6) brightness(1.5); }
+    .room-gallery .nav-btn { opacity: 0; transition: opacity 0.3s ease; }
+    .room-gallery:hover .nav-btn { opacity: 1; }
+
+    /* Loading Screen Styles */
+    #loading-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; transition: opacity 0.75s ease-out; }
+    .loading-container { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('https://www.transparenttextures.com/patterns/dark-wood.png'); background-size: cover; background-position: center; color: #fff; text-align: center; position: relative; }
+    .loading-title { font-family: 'Playfair Display', serif; font-size: 70px; font-weight: bold; letter-spacing: 6px; text-transform: uppercase; background: linear-gradient(90deg, #d4af37, #b8860b, #d4af37); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-size: 200% auto; animation: shimmer 3s linear infinite, fadeIn 2s ease forwards; opacity: 0; }
+    .loading-subtitle { font-family: 'Cinzel', serif; font-size: 36px; color: #b0a39f; letter-spacing: 3px; margin-top: 15px; opacity: 0; animation: fadeIn 2s ease forwards; animation-delay: 1.5s; }
+    .loading-dots { margin-top: 40px; font-family: 'Cinzel', serif; font-size: 20px; color: #f5f5f5; letter-spacing: 2px; display: flex; justify-content: center; align-items: center; }
+    .dot { width: 8px; height: 8px; margin: 0 4px; background: #d4af37; border-radius: 50%; animation: bounce 1.2s infinite; }
+    .dot:nth-child(2) { animation-delay: 0.2s; }
+    .dot:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes shimmer { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes bounce { 0%, 80%, 100% { transform: scale(0.8); opacity: 0.6; } 40% { transform: scale(1.3); opacity: 1; } }
+</style>
+</head>
+<body class="text-gray-800" style="overflow: hidden;">
+
+    <div id="loading-screen">
+        <div class="loading-container">
+            <div class="loading-logo"><img src="/static/images/logo.jpg" alt="Khar Skardu Logo" class="w-32 mx-auto"></div>
+            <div class="loading-title">KHAR</div>
+            <div class="loading-subtitle">Skardu</div>
+            <div class="loading-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+        </div>
+    </div>
+
+    <main id="main-content" style="display: none;">
+        <header class="relative text-white overflow-hidden h-screen">
+            <div id="hero-slideshow" class="absolute top-0 left-0 w-full h-full">
+                <div class="hero-slideshow-image active" style="background-image: url('https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070&auto=format&fit=crop');"></div>
+                <div class="hero-slideshow-image" style="background-image: url('https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?q=80&w=2070&auto=format&fit=crop');"></div>
+                <div class="hero-slideshow-image" style="background-image: url('https://images.unsplash.com/photo-1542314831-068cd1dbb5eb?q=80&w=2070&auto=format&fit=crop');"></div>
+                <div class="hero-slideshow-image" style="background-image: url('https://images.unsplash.com/photo-1582719508461-905c673771fd?q=80&w=1925&auto=format&fit=crop');"></div>
+            </div>
+            <div class="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 z-10"></div>
+
+            <div class="relative z-20 flex flex-col h-full">
+                <nav id="navbar" class="container mx-auto px-6 py-4 flex justify-between items-center fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+                    <a href="#" class="font-playfair text-2xl font-bold">Khar Skardu</a>
+                    <div class="hidden md:flex space-x-8 items-center">
+                        <a href="#about" class="nav-link">About</a>
+                        <a href="#seasons" class="nav-link">Seasons</a>
+                        <a href="#rooms" class="nav-link">Rooms</a>
+                        <a href="#dining" class="nav-link">Dining</a>
+                        <a href="#events" class="nav-link">Events</a>
+                        <a href="#gallery" class="nav-link">Gallery</a>
+                        <a href="#blog" class="nav-link">Experiences</a>
+                        <a href="#booking" class="bg-amber-800 hover:bg-amber-900 text-white font-bold py-2 px-5 rounded-lg transition-all duration-300 transform hover:scale-105">Book Now</a>
+                    </div>
+                    <button id="mobile-menu-button" class="md:hidden">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                    </button>
+                </nav>
+                <div id="mobile-menu" class="hidden md:hidden bg-black bg-opacity-80 fixed top-[68px] left-0 right-0 z-40">
+                    <a href="#about" class="block py-2 px-4 text-sm hover:bg-amber-800">About</a>
+                    <a href="#seasons" class="block py-2 px-4 text-sm hover:bg-amber-800">Seasons</a>
+                    <a href="#rooms" class="block py-2 px-4 text-sm hover:bg-amber-800">Rooms</a>
+                    <a href="#dining" class="block py-2 px-4 text-sm hover:bg-amber-800">Dining</a>
+                    <a href="#events" class="block py-2 px-4 text-sm hover:bg-amber-800">Events</a>
+                    <a href="#gallery" class="block py-2 px-4 text-sm hover:bg-amber-800">Gallery</a>
+                    <a href="#blog" class="block py-2 px-4 text-sm hover:bg-amber-800">Experiences</a>
+                    <a href="#booking" class="block py-2 px-4 text-sm hover:bg-amber-800">Book Now</a>
+                </div>
+
+                <div class="flex-grow flex items-center justify-center text-center pt-[68px]">
+                    <div class="container mx-auto px-6">
+                        <h1 class="font-playfair text-4xl md:text-6xl font-bold leading-tight animate-on-scroll" style="transform: translateY(30px);">Your Traditional Retreat Awaits</h1>
+                        <p class="mt-4 text-lg md:text-xl text-amber-100 animate-on-scroll" style="transform: translateY(30px); --animation-delay: 0.2s;">Experience timeless hospitality in the heart of nature.</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <section id="booking" class="bg-amber-50 py-12 relative z-10">
+            <div class="container mx-auto px-6">
+                <div class="bg-white rounded-xl shadow-2xl p-6 md:p-8 max-w-4xl mx-auto -mt-24 relative z-20 animate-on-scroll" style="transform: translateY(50px);">
+                     <form class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end" method="GET" action="#">
+                        <div class="space-y-2">
+                            <label for="checkin" class="text-sm font-semibold text-gray-600">Check-in</label>
+                            <input name="checkin" type="date" id="checkin" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-800 transition-shadow">
+                        </div>
+                        <div class="space-y-2">
+                            <label for="checkout" class="text-sm font-semibold text-gray-600">Check-out</label>
+                            <input name="checkout" type="date" id="checkout" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-800 transition-shadow">
+                        </div>
+                        <div class="space-y-2">
+                            <label for="guests" class="text-sm font-semibold text-gray-600">Guests</label>
+                            <select id="guests" class="w-full p-3 border border-gray-300 rounded-lg appearance-none bg-white focus:outline-none focus:ring-2 focus:ring-amber-800 transition-shadow">
+                                <option>1 Guest</option>
+                                <option selected>2 Guests</option>
+                                <option>3 Guests</option>
+                                <option>4 Guests</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="w-full bg-amber-800 hover:bg-amber-900 text-white font-bold p-3 rounded-lg transition-all duration-300 h-12 md:h-auto transform hover:scale-105" style="animation: pulse 2.5s infinite;">Check Availability</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <section id="video" class="py-20 bg-FBF5EE">
+            <div class="container mx-auto px-6 text-center">
+                 <h2 class="font-playfair text-3xl md:text-4xl font-bold text-amber-900 animate-on-scroll" style="transform: translateY(30px);">A Glimpse Into Serenity</h2>
+                 <p class="mt-2 text-gray-600 max-w-2xl mx-auto animate-on-scroll" style="transform: translateY(30px); --animation-delay: 0.2s;">Discover the soul of The Khar. Press play and step into a world of rustic charm and tranquility.</p>
+                 <div id="play-video-button" class="mt-8 relative max-w-4xl mx-auto rounded-xl overflow-hidden shadow-2xl cursor-pointer animate-on-scroll" style="transform: scale(0.9);">
+                     <div class="video-bg h-64 md:h-96 w-full flex items-center justify-center">
+                         <div class="bg-white bg-opacity-20 rounded-full p-5 backdrop-blur-sm transform hover:scale-110 transition-transform duration-300" style="animation: glow 3s infinite;">
+                             <svg class="w-16 h-16 text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
+                         </div>
+                     </div>
+                 </div>
+            </div>
+        </section>
+
+        <section id="about" class="py-20 bg-amber-50 overflow-hidden">
+            <div class="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+                <div class="animate-on-scroll" style="transform: translateX(-50px);">
+                    <img src="https://images.unsplash.com/photo-1568495248636-6432b97bd949?q=80&w=1974&auto=format&fit=crop" alt="Cozy interior of the guesthouse" class="rounded-xl shadow-xl w-full h-auto">
+                </div>
+                <div class="animate-on-scroll" style="transform: translateX(50px);">
+                    <h2 class="font-playfair text-3xl md:text-4xl font-bold text-amber-900">Crafted from Tradition, Built for Comfort</h2>
+                    <p class="mt-4 text-gray-600">The Khar is more than just a place to stay; it's an experience woven from the threads of local heritage. Our guesthouse is constructed with locally sourced wood, handcrafted by artisans who have passed down their skills through generations.</p>
+                    <p class="mt-4 text-gray-600">We invite you to disconnect from the everyday and reconnect with nature in an environment that prizes authenticity, comfort, and quiet luxury.</p>
+                     <button class="mt-6 bg-transparent border-2 border-amber-800 text-amber-800 hover:bg-amber-800 hover:text-white font-bold py-2 px-6 rounded-lg transition-all duration-300 transform hover:scale-105">Learn More</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="explore-cta" class="py-24 md:py-32 bg-fixed text-white text-center relative" style="background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=2070&auto=format&fit=crop'); background-size: cover; background-position: center;">
+            <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+            <div class="container mx-auto px-6 relative z-10">
+                <h2 class="font-playfair text-3xl md:text-5xl font-bold animate-on-scroll" style="transform: translateY(30px);">Your Gateway to Adventure</h2>
+                <p class="mt-4 text-lg md:text-xl text-amber-100 max-w-2xl mx-auto animate-on-scroll" style="transform: translateY(30px); --animation-delay: 0.2s;">Beyond the comfort of our guesthouse lies a world of breathtaking landscapes and ancient wonders. Discover what awaits just moments from your doorstep.</p>
+                <a href="#" class="mt-8 inline-block bg-amber-800 hover:bg-amber-900 text-white font-bold py-3 px-10 rounded-lg transition-colors transform hover:scale-105 shadow-lg animate-on-scroll" style="transform: translateY(30px); --animation-delay: 0.4s;">
+                    Start Exploring
+                </a>
+            </div>
+        </section>
+
+        <section id="seasons" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="w-full mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden animate-on-scroll" style="transform: translateY(50px);">
+                    <div class="p-6 md:p-10">
+                        <h2 class="font-playfair text-3xl md:text-5xl font-bold text-gray-800 text-center">A View for Every Season</h2>
+                        <p class="text-center text-gray-500 mt-2 md:mt-4 max-w-2xl mx-auto">Experience the unparalleled beauty of Pakistan from the comfort of our guesthouse, where every change in season brings a new, breathtaking landscape.</p>
+                    </div>
+
+                    <div id="tabs-container" class="flex justify-center border-b border-gray-200 bg-gray-50">
+                        <button data-season="winter" class="season-tab active-tab text-amber-800 relative py-4 px-4 sm:px-6 md:px-8 text-sm sm:text-base font-semibold focus:outline-none transition-colors duration-300">
+                            Winter
+                            <span class="absolute bottom-0 left-0 w-full h-0.5 bg-sky-700 transform scale-x-100 transition-transform duration-300"></span>
+                        </button>
+                        <button data-season="autumn" class="season-tab text-gray-500 hover:text-amber-800 relative py-4 px-4 sm:px-6 md:px-8 text-sm sm:text-base font-semibold focus:outline-none transition-colors duration-300">
+                            Autumn
+                            <span class="absolute bottom-0 left-0 w-full h-0.5 bg-orange-600 transform scale-x-0 transition-transform duration-300"></span>
+                        </button>
+                        <button data-season="spring" class="season-tab text-gray-500 hover:text-amber-800 relative py-4 px-4 sm:px-6 md:px-8 text-sm sm:text-base font-semibold focus:outline-none transition-colors duration-300">
+                            Spring
+                            <span class="absolute bottom-0 left-0 w-full h-0.5 bg-rose-500 transform scale-x-0 transition-transform duration-300"></span>
+                        </button>
+                        <button data-season="summer" class="season-tab text-gray-500 hover:text-amber-800 relative py-4 px-4 sm:px-6 md:px-8 text-sm sm:text-base font-semibold focus:outline-none transition-colors duration-300">
+                            Summer
+                            <span class="absolute bottom-0 left-0 w-full h-0.5 bg-amber-500 transform scale-x-0 transition-transform duration-300"></span>
+                        </button>
+                    </div>
+
+                    <div class="relative w-full h-[60vh] md:h-[70vh] overflow-hidden">
+                        <div id="winter" class="season-panel absolute inset-0 bg-cover bg-center opacity-100 z-10 transition-opacity duration-700" style="background-image: url('https://skardu.pk/wp-content/uploads/2020/01/skd.jpg');">
+                            <div class="absolute inset-0 bg-black bg-opacity-30"></div>
+                            <div id="winter-effects" class="absolute inset-0"></div> </div>
+                        <div id="autumn" class="season-panel absolute inset-0 bg-cover bg-center opacity-0 z-0 transition-opacity duration-700" style="background-image: url('https://traveloguers.com/wp-content/uploads/2024/02/Khaplu-Skardu-Gilgit-Baltistan.webp');">
+                            <div class="absolute inset-0 bg-black bg-opacity-30"></div>
+                            <div id="autumn-effects" class="absolute inset-0"></div> </div>
+                        <div id="spring" class="season-panel absolute inset-0 bg-cover bg-center opacity-0 z-0 transition-opacity duration-700" style="background-image: url('https://naturehikepakistan.pk/wp-content/uploads/2025/02/3c14def818-min.jpg');">
+                            <div class="absolute inset-0 bg-black bg-opacity-30"></div>
+                            <div id="spring-effects" class="absolute inset-0"></div> </div>
+                        <div id="summer" class="season-panel absolute inset-0 bg-cover bg-center opacity-0 z-0 transition-opacity duration-700" style="background-image: url('https://www.apricottours.pk/wp-content/uploads/2024/12/Shangrilla-Skardu.jpeg');">
+                            <div class="absolute inset-0 bg-black bg-opacity-30"></div>
+                            <div id="summer-effects" class="absolute inset-0"></div> </div>
+
+                        <div class="absolute inset-0 flex items-center justify-center z-20 p-4">
+                            <div class="text-center">
+                                <h3 id="season-title" class="font-playfair text-white text-4xl md:text-6xl font-bold drop-shadow-lg transition-all duration-500">Winter Wonderland</h3>
+                                <p id="season-description" class="text-white text-lg mt-4 max-w-xl mx-auto drop-shadow-md transition-all duration-500">Embrace the crisp, serene beauty of a snow-covered landscape. Perfect for cozy evenings by the fire.</p>
+                                <button class="mt-8 bg-amber-800 hover:bg-amber-900 text-white font-bold py-3 px-8 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300">
+                                    Book Your Seasonal Stay
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="rooms" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12 animate-on-scroll" style="transform: translateY(30px);">
+                    <h2 class="font-playfair text-3xl md:text-4xl font-bold text-amber-900">Rest in Rustic Comfort</h2>
+                    <p class="mt-2 text-gray-600 max-w-2xl mx-auto">Each of our rooms is uniquely designed with natural wood and handcrafted details to provide a warm, inviting atmosphere.</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8 max-w-7xl mx-auto">
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col animate-on-scroll transition-all duration-500 hover:shadow-2xl hover:-translate-y-2" style="transform: translateY(50px);">
+                        <div class="relative room-gallery overflow-hidden">
+                            <div class="slider-track flex transition-transform duration-500 ease-in-out">
+                                <img src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?q=80&w=2070&auto=format&fit=crop" alt="Deluxe Mountain View - View 1" class="w-full h-64 object-cover flex-shrink-0">
+                                <img src="https://images.unsplash.com/photo-1618773928121-c32242e63f39?q=80&w=2070&auto=format&fit=crop" alt="Deluxe Mountain View - View 2" class="w-full h-64 object-cover flex-shrink-0">
+                            </div>
+                            <button class="nav-btn prev-btn absolute top-1/2 left-3 -translate-y-1/2 bg-black bg-opacity-40 text-white p-2 rounded-full hover:bg-opacity-60 focus:outline-none z-10">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+                            </button>
+                            <button class="nav-btn next-btn absolute top-1/2 right-3 -translate-y-1/2 bg-black bg-opacity-40 text-white p-2 rounded-full hover:bg-opacity-60 focus:outline-none z-10">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+                            </button>
+                        </div>
+                        <div class="p-6 flex flex-col flex-grow">
+                            <h3 class="font-playfair text-2xl font-bold text-amber-900">Deluxe Mountain View</h3>
+                            <p class="mt-2 text-gray-600 flex-grow">A spacious room offering panoramic views of the surrounding peaks. Features a king-sized bed and a private balcony.</p>
+                            
+                            <div class="mt-4 pt-4 border-t">
+                                <h4 class="text-sm font-semibold text-gray-800 mb-3">What's Included</h4>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="inline-flex items-center gap-2 py-1 px-3 rounded-full text-xs font-medium bg-gray-100 text-gray-700">
+                                        <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.288 15.038a5.25 5.25 0 017.424 0M5.106 11.856c3.807-3.808 9.98-3.808 13.788 0M1.924 8.674c5.565-5.565 14.587-5.565 20.152 0M12.53 18.247l-.384.384a1.5 1.5 0 01-2.121 0l-.384-.384M12 18.75v.008z" /></svg>
+                                        Free Wi-Fi
+                                    </span>
+                                    <span class="inline-flex items-center gap-2 py-1 px-3 rounded-full text-xs font-medium bg-gray-100 text-gray-700">
+                                        <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path d="M4.5 2A1.5 1.5 0 003 3.5v13A1.5 1.5 0 004.5 18h11a1.5 1.5 0 001.5-1.5v-13A1.5 1.5 0 0015.5 2h-11zM10 9a3 3 0 100-6 3 3 0 000 6zM5 11.5a.5.5 0 01.5-.5h9a.5.5 0 010 1h-9a.5.5 0 01-.5-.5zM6 14.5a.5.5 0 01.5-.5h2a.5.5 0 010 1h-2a.5.5 0 01-.5-.5z" /></svg>
+                                        Free Breakfast
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="mt-4 pt-4 border-t grid grid-cols-2 gap-2 text-gray-700 text-sm">
+                                <div class="flex items-center space-x-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-amber-800" viewBox="0 0 20 20" fill="currentColor"><path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" /></svg>
+                                    <span>2 Guests</span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-amber-800" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6z" /></svg>
+                                    <span>350 sq ft</span>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-6 flex justify-between items-center">
+                                <div>
+                                    <span class="text-2xl font-bold text-amber-800">PKR 25,000</span>
+                                    <span class="text-gray-500 text-sm">/ night</span>
+                                </div>
+                                <a href="#booking" class="bg-amber-800 hover:bg-amber-900 text-white font-bold py-2 px-5 rounded-lg transition-colors text-sm whitespace-nowrap transform hover:scale-105">Book Now</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col animate-on-scroll transition-all duration-500 hover:shadow-2xl hover:-translate-y-2" style="transform: translateY(50px); --animation-delay: 0.2s;">
+                        <div class="relative room-gallery overflow-hidden">
+                            <div class="slider-track flex transition-transform duration-500 ease-in-out">
+                                <img src="https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?q=80&w=2070&auto=format&fit=crop" alt="Cozy Garden Retreat - View 1" class="w-full h-64 object-cover flex-shrink-0">
+                                <img src="https://images.unsplash.com/photo-1590490359854-dfba59ee8bab?q=80&w=1974&auto=format&fit=crop" alt="Cozy Garden Retreat - View 2" class="w-full h-64 object-cover flex-shrink-0">
+                            </div>
+                            <button class="nav-btn prev-btn absolute top-1/2 left-3 -translate-y-1/2 bg-black bg-opacity-40 text-white p-2 rounded-full hover:bg-opacity-60 focus:outline-none z-10">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+                            </button>
+                            <button class="nav-btn next-btn absolute top-1/2 right-3 -translate-y-1/2 bg-black bg-opacity-40 text-white p-2 rounded-full hover:bg-opacity-60 focus:outline-none z-10">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+                            </button>
+                        </div>
+                        <div class="p-6 flex flex-col flex-grow">
+                            <h3 class="font-playfair text-2xl font-bold text-amber-900">Cozy Garden Retreat</h3>
+                            <p class="mt-2 text-gray-600 flex-grow">A charming room with direct access to our serene garden. Perfect for those who appreciate nature and tranquility.</p>
+                            
+                            <div class="mt-4 pt-4 border-t">
+                                <h4 class="text-sm font-semibold text-gray-800 mb-3">What's Included</h4>
+                                <div class="flex flex-wrap gap-2">
+                                     <span class="inline-flex items-center gap-2 py-1 px-3 rounded-full text-xs font-medium bg-gray-100 text-gray-700">
+                                        <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.288 15.038a5.25 5.25 0 017.424 0M5.106 11.856c3.807-3.808 9.98-3.808 13.788 0M1.924 8.674c5.565-5.565 14.587-5.565 20.152 0M12.53 18.247l-.384.384a1.5 1.5 0 01-2.121 0l-.384-.384M12 18.75v.008z" /></svg>
+                                        Free Wi-Fi
+                                    </span>
+                                    <span class="inline-flex items-center gap-2 py-1 px-3 rounded-full text-xs font-medium bg-gray-100 text-gray-700">
+                                        <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" /></svg>
+                                        Air-conditioned
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-4 pt-4 border-t grid grid-cols-2 gap-2 text-gray-700 text-sm">
+                                <div class="flex items-center space-x-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-amber-800" viewBox="0 0 20 20" fill="currentColor"><path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" /></svg>
+                                    <span>2 Guests</span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-amber-800" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6z" /></svg>
+                                    <span>280 sq ft</span>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-6 flex justify-between items-center">
+                                <div>
+                                    <span class="text-2xl font-bold text-amber-800">PKR 18,000</span>
+                                    <span class="text-gray-500 text-sm">/ night</span>
+                                </div>
+                                <a href="#booking" class="bg-amber-800 hover:bg-amber-900 text-white font-bold py-2 px-5 rounded-lg transition-colors text-sm whitespace-nowrap transform hover:scale-105">Book Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+       
+<section id="dining" class="py-20 bg-FBF5EE overflow-hidden">
+    <div class="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+        <div class="animate-on-scroll" style="transform: translateX(-50px);">
+            <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2070&auto=format&fit=crop" alt="Rustic and elegant dining hall of the guesthouse" class="rounded-xl shadow-xl w-full h-auto">
+        </div>
+        <div class="animate-on-scroll" style="transform: translateX(50px);">
+            <h2 class="font-playfair text-3xl md:text-4xl font-bold text-amber-900">A Taste of the Mountains</h2>
+            <p class="mt-4 text-gray-600">Our dining hall is the heart of The Khar Skardu, where culinary tradition meets local bounty. We serve farm-to-table dishes prepared with the freshest ingredients sourced from surrounding valleys, offering an authentic taste of the region's flavors.</p>
+            <p class="mt-4 text-gray-600">Enjoy hearty breakfasts, leisurely lunches, and intimate dinners by the warmth of our grand stone fireplace. It's more than a meal; it's a celebration of heritage.</p>
+            <button id="viewMenuBtn" class="mt-6 bg-amber-800 hover:bg-amber-900 text-white font-bold py-2 px-6 rounded-lg transition-all duration-300 transform hover:scale-105">View Our Menu</button>
+        </div>
+    </div>
+</section>
+
+<div id="menuModal" class="modal">
+  <span class="close">&times;</span>
+  <img class="modal-content" src="/static/images/menu.png" alt="Menu">
+</div>
+
+<section id="events" class="py-20 bg-orange-50 overflow-hidden">
+    <div class="container mx-auto px-6 grid md:grid-cols-2 gap-12 md:gap-16 items-center">
+        
+        <div class="animate-on-scroll" style="transform: translateX(-50px);">
+            <h2 class="font-playfair text-4xl md:text-5xl font-bold text-orange-900 leading-tight">Where Good Times <br> & Great Views Collide.</h2>
+            <p class="mt-4 text-gray-700 text-lg">From birthday bashes to blissful bridal showers, our cozy corner of the world is the ultimate backdrop for your big moments. Let's make some magic happen.</p>
+            
+            <div class="mt-8 grid grid-cols-2 gap-6 text-gray-800">
+                <div class="flex items-center space-x-3">
+                    <div class="bg-orange-100 p-3 rounded-full">
+                        <svg class="w-6 h-6 text-orange-700" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M11.373 3.647a2.5 2.5 0 013.254 0l7.25 5.653a2.5 2.5 0 01-1.054 4.54L11 11.272V20.5a2.5 2.5 0 01-5 0v-9.228L-1.677 13.84a2.5 2.5 0 01-1.054-4.54l7.25-5.653a2.5 2.5 0 012.354-.593l4.5 1.5zM9.5 5.25a.75.75 0 00-1.5 0v1.319l1.5 1.168V5.25z"/></svg>
+                    </div>
+                    <span class="font-semibold text-lg">Birthday Bashes</span>
+                </div>
+                <div class="flex items-center space-x-3">
+                     <div class="bg-rose-100 p-3 rounded-full">
+                        <svg class="w-6 h-6 text-rose-700" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12.001 4.529c2.349-2.109 5.979-2.039 8.242.228 2.262 2.268 2.34 5.88.236 8.236l-8.48 8.492-8.478-8.492c-2.104-2.356-2.025-5.974.236-8.236 2.265-2.264 5.888-2.34 8.244-.228z"/></svg>
+                    </div>
+                    <span class="font-semibold text-lg">Dreamy Showers</span>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <div class="bg-teal-100 p-3 rounded-full">
+                        <svg class="w-6 h-6 text-teal-700" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12.75 3.03a.75.75 0 00-1.5 0v1.517a2.5 2.5 0 01-1.025 1.957.75.75 0 00-.416 1.133 4 4 0 005.382 0 .75.75 0 00-.416-1.133 2.5 2.5 0 01-1.025-1.957V3.03zM6.31 6.31a.75.75 0 00-1.06-1.06l-1.173 1.172a.75.75 0 001.06 1.061l1.173-1.172zM18.75 5.25a.75.75 0 00-1.061-1.06l-1.172 1.173a.75.75 0 101.06 1.06l1.173-1.173zM5.25 12.75a.75.75 0 000-1.5H3.75a.75.75 0 000 1.5h1.5zM18.75 11.25a.75.75 0 000 1.5h1.5a.75.75 0 000-1.5h-1.5zM6.31 17.69a.75.75 0 00-1.06 1.06l1.173 1.173a.75.75 0 101.06-1.06l-1.173-1.173zM18.75 18.75a.75.75 0 00-1.061 1.06l1.172 1.173a.75.75 0 101.06-1.06l-1.173-1.172z"/></svg>
+                    </div>
+                    <span class="font-semibold text-lg">Team Retreats</span>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <div class="bg-indigo-100 p-3 rounded-full">
+                        <svg class="w-6 h-6 text-indigo-700" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M4.5 3.75a3 3 0 00-3 3v.75h21v-.75a3 3 0 00-3-3h-15zM22.5 9.75h-21v7.5a3 3 0 003 3h15a3 3 0 003-3v-7.5zM15 12.75a.75.75 0 01.75-.75h3a.75.75 0 010 1.5h-3a.75.75 0 01-.75-.75z"/></svg>
+                    </div>
+                    <span class="font-semibold text-lg">Intimate Soirees</span>
+                </div>
+            </div>
+            <p class="mt-8 text-gray-700">You bring the people, we'll handle the rest. Our team is obsessed with the details, so you can focus on the fun part: making memories.</p>
+        </div>
+        
+        <div class="relative h-[32rem] md:h-[40rem] w-full">
+            <div class="absolute top-4 right-0 w-8/12 bg-white p-4 pb-16 rounded-lg shadow-xl z-10 animate-on-scroll" style="--start-transform: translate(50px, -20px) rotate(15deg) scale(0.8); --end-transform: rotate(3deg);">
+                <img src="https://www.theknot.com/tk-media/images/1af6b70e-a677-4c0f-a89a-0090de1084a7.jpg" alt="A beautiful bridal shower setup with flowers" class="w-full h-auto rounded-md">
+                <p class="font-caveat absolute bottom-4 left-4 text-xl text-gray-700 transform -rotate-1">The perfect bridal shower!</p>
+            </div>
+            
+            <div class="absolute bottom-4 left-0 w-7/12 bg-white p-4 pb-16 rounded-lg shadow-2xl border-4 border-white z-20 animate-on-scroll" style="--start-transform: translate(-50px, 20px) rotate(-20deg) scale(0.8); --end-transform: rotate(-6deg); --animation-delay: 0.2s;">
+                <img src="https://hips.hearstapps.com/hmg-prod/images/cozy-living-room-ideas-lead-65cf795c6e997.jpg?crop=0.8893463715903243xw:1xh;center,top&resize=1200:*" alt="A cozy, well-decorated living space for gatherings" class="w-full h-auto rounded-md">
+                <p class="font-caveat absolute bottom-4 right-4 text-xl text-gray-700 transform rotate-1">Cozy get-togethers...</p>
+            </div>
+            
+            <div class="absolute top-1/3 left-10 w-5/12 bg-white p-3 pb-12 rounded-lg shadow-lg z-0 animate-on-scroll" style="--start-transform: translate(0, -50px) rotate(30deg) scale(0.8); --end-transform: rotate(12deg); --animation-delay: 0.4s;">
+                 <img src="https://cdn.mos.cms.futurecdn.net/v2/t:0,l:200,cw:1200,ch:900,q:80,w:1200/rmUuWniHKpPEUMi6n7P8Ra.jpg" alt="Close-up of a celebration cake" class="w-full h-auto rounded-md">
+                 <p class="font-caveat absolute bottom-3 left-3 text-lg text-gray-700">Birthday wishes 🎉</p>
+            </div>
+        </div>
+    </div>
+    
+</section>
+<section id="reviews" class="py-20 bg-amber-50">
+    <div class="container mx-auto px-6">
+        <div class="text-center mb-12" data-aos="fade-up">
+            <h2 class="font-playfair text-3xl md:text-4xl font-bold text-amber-900">Straight from Our Guests</h2>
+            <p class="mt-2 text-gray-600 max-w-2xl mx-auto">Real stories from people who've made memories at Khar Skardu.</p>
+            <div class="inline-flex items-center justify-center mt-4">
+                <span class="font-bold text-xl text-gray-800 mr-2">Excellent</span>
+                <div class="flex items-center">
+                    <svg class="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                    <svg class="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                    <svg class="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                    <svg class="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                    <svg class="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                </div>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/32px-Google_%22G%22_logo.svg.png" alt="Google logo" class="w-6 h-6 ml-4">
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+            <div class="bg-white rounded-xl shadow-lg p-6 flex flex-col transition-transform duration-300 hover:-translate-y-2 relative overflow-hidden" data-aos="fade-up" data-aos-delay="100">
+                <svg class="absolute top-0 left-0 w-24 h-24 text-amber-100 opacity-50 transform -translate-x-4 -translate-y-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" transform="scale(-1, 1) translate(-20, 0)"></path><path d="M5 4a1 1 0 00-1 1v6a1 1 0 102 0V6a1 1 0 00-1-1zm10 0a1 1 0 00-1 1v6a1 1 0 102 0V6a1 1 0 00-1-1zM2 10.25A.75.75 0 012.75 9.5h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10.25z"></path></svg>
+                <div class="flex items-center mb-4 z-10">
+                    <img class="w-14 h-14 rounded-full object-cover mr-4 border-2 border-amber-200" src="https://randomuser.me/api/portraits/women/65.jpg" alt="Reviewer Avatar">
+                    <div>
+                        <p class="font-bold text-gray-800">Sarah K.</p>
+                        <div class="flex items-center">
+                            <svg class="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-gray-600 italic flex-grow">"An absolutely magical escape. The craftsmanship of the guesthouse is stunning, and the views are simply out of this world. Waking up to the mountains was a dream. The staff were incredibly warm and welcoming."</p>
+                <p class="text-xs text-gray-400 mt-4 text-right">2 weeks ago</p>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-lg p-6 flex flex-col transition-transform duration-300 hover:-translate-y-2 relative overflow-hidden" data-aos="fade-up" data-aos-delay="200">
+                 <svg class="absolute top-0 left-0 w-24 h-24 text-amber-100 opacity-50 transform -translate-x-4 -translate-y-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" transform="scale(-1, 1) translate(-20, 0)"></path><path d="M5 4a1 1 0 00-1 1v6a1 1 0 102 0V6a1 1 0 00-1-1zm10 0a1 1 0 00-1 1v6a1 1 0 102 0V6a1 1 0 00-1-1zM2 10.25A.75.75 0 012.75 9.5h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10.25z"></path></svg>
+                <div class="flex items-center mb-4 z-10">
+                    <img class="w-14 h-14 rounded-full object-cover mr-4 border-2 border-amber-200" src="https://randomuser.me/api/portraits/men/32.jpg" alt="Reviewer Avatar">
+                    <div>
+                        <p class="font-bold text-gray-800">David Chen</p>
+                        <div class="flex items-center">
+                            <svg class="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-gray-600 italic flex-grow">"The perfect blend of rustic charm and modern comfort. The food was delicious, with authentic local flavors that I'm still dreaming about. A must-stay for anyone visiting Skardu. Highly recommend!"</p>
+                <p class="text-xs text-gray-400 mt-4 text-right">1 month ago</p>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-lg p-6 flex flex-col transition-transform duration-300 hover:-translate-y-2 relative overflow-hidden" data-aos="fade-up" data-aos-delay="300">
+                <svg class="absolute top-0 left-0 w-24 h-24 text-amber-100 opacity-50 transform -translate-x-4 -translate-y-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" transform="scale(-1, 1) translate(-20, 0)"></path><path d="M5 4a1 1 0 00-1 1v6a1 1 0 102 0V6a1 1 0 00-1-1zm10 0a1 1 0 00-1 1v6a1 1 0 102 0V6a1 1 0 00-1-1zM2 10.25A.75.75 0 012.75 9.5h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10.25z"></path></svg>
+                <div class="flex items-center mb-4 z-10">
+                    <img class="w-14 h-14 rounded-full object-cover mr-4 border-2 border-amber-200" src="https://randomuser.me/api/portraits/women/44.jpg" alt="Reviewer Avatar">
+                    <div>
+                        <p class="font-bold text-gray-800">Fatima Ahmed</p>
+                        <div class="flex items-center">
+                            <svg class="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg class="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-gray-600 italic flex-grow">"Our family had an unforgettable time. The rooms were cozy and clean, and the location is perfect for exploring the area. The kids loved the open space. It felt like a home away from home. We will be back!"</p>
+                <p class="text-xs text-gray-400 mt-4 text-right">3 months ago</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+        <section id="gallery" class="py-20 bg-FBF5EE">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="font-playfair text-3xl md:text-4xl font-bold text-amber-900 animate-on-scroll" style="transform: translateY(30px);">Moments Captured in Wood & Light</h2>
+                <div class="w-24 h-1 bg-amber-800 mx-auto mt-4 rounded animate-on-scroll" style="transform: translateY(30px); --animation-delay: 0.1s;"></div>
+                <p class="mt-4 text-gray-600 max-w-2xl mx-auto animate-on-scroll" style="transform: translateY(30px); --animation-delay: 0.2s;">A collection of scenes from our guesthouse, showcasing the harmony of nature and craftsmanship.</p>
+                
+                <div class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[20rem]">
+                    <a href="https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?q=80&w=1949&auto=format&fit=crop" class="gallery-item group relative overflow-hidden rounded-xl shadow-lg animate-on-scroll" style="transform: scale(0.9); --animation-delay: 0.1s;">
+                        <img src="https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?q=80&w=1949&auto=format&fit=crop" alt="A moment from Khar Skardu" class="absolute inset-0 w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <svg class="w-12 h-12 text-white transform scale-75 group-hover:scale-100 transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607zM10.5 7.5v6m3-3h-6" /></svg>
+                        </div>
+                    </a>
+                    <a href="https://images.unsplash.com/photo-1522798514-97427c121874?q=80&w=2070&auto=format&fit=crop" class="gallery-item group relative overflow-hidden rounded-xl shadow-lg md:col-span-2 animate-on-scroll" style="transform: scale(0.9); --animation-delay: 0.2s;">
+                        <img src="https://images.unsplash.com/photo-1522798514-97427c121874?q=80&w=2070&auto=format&fit=crop" alt="A moment from Khar Skardu" class="absolute inset-0 w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <svg class="w-12 h-12 text-white transform scale-75 group-hover:scale-100 transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607zM10.5 7.5v6m3-3h-6" /></svg>
+                        </div>
+                    </a>
+                    <a href="https://images.unsplash.com/photo-1629592239334-19558395543c?q=80&w=1964&auto=format&fit=crop" class="gallery-item group relative overflow-hidden rounded-xl shadow-lg md:row-span-2 animate-on-scroll" style="transform: scale(0.9); --animation-delay: 0.3s;">
+                        <img src="https://images.unsplash.com/photo-1629592239334-19558395543c?q=80&w=1964&auto=format&fit=crop" alt="A moment from Khar Skardu" class="absolute inset-0 w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <svg class="w-12 h-12 text-white transform scale-75 group-hover:scale-100 transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607zM10.5 7.5v6m3-3h-6" /></svg>
+                        </div>
+                    </a>
+                    <a href="https://images.unsplash.com/photo-1584132967334-10e028bd69f7?q=80&w=2070&auto=format&fit=crop" class="gallery-item group relative overflow-hidden rounded-xl shadow-lg animate-on-scroll" style="transform: scale(0.9); --animation-delay: 0.4s;">
+                        <img src="https://images.unsplash.com/photo-1584132967334-10e028bd69f7?q=80&w=2070&auto=format&fit=crop" alt="A moment from Khar Skardu" class="absolute inset-0 w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <svg class="w-12 h-12 text-white transform scale-75 group-hover:scale-100 transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607zM10.5 7.5v6m3-3h-6" /></svg>
+                        </div>
+                    </a>
+                    <a href="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=2070&auto=format&fit=crop" class="gallery-item group relative overflow-hidden rounded-xl shadow-lg md:col-span-2 animate-on-scroll" style="transform: scale(0.9); --animation-delay: 0.5s;">
+                        <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=2070&auto=format&fit=crop" alt="A moment from Khar Skardu" class="absolute inset-0 w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <svg class="w-12 h-12 text-white transform scale-75 group-hover:scale-100 transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607zM10.5 7.5v6m3-3h-6" /></svg>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <footer class="wooden-bg text-white">
+            <div class="container mx-auto px-6 py-12">
+                <div class="grid md:grid-cols-4 gap-8 animate-on-scroll" style="transform: translateY(50px);">
+                    <div>
+                        <h3 class="font-playfair text-2xl font-bold">Khar Skardu</h3>
+                        <p class="mt-2 text-amber-100 text-sm">Your home away from home, steeped in tradition.</p>
+                    </div>
+                     <div>
+                        <h4 class="font-bold text-lg text-amber-100">Quick Links</h4>
+                        <ul class="mt-4 space-y-2 text-sm">
+                            <li><a href="#about" class="hover:underline">About Us</a></li>
+                            <li><a href="#gallery" class="hover:underline">Gallery</a></li>
+                            <li><a href="#blog" class="hover:underline">Experiences</a></li>
+                            <li><a href="#" class="hover:underline">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                         <h4 class="font-bold text-lg text-amber-100">Contact</h4>
+                        <ul class="mt-4 space-y-2 text-sm">
+                            <li><p>123 Forest Lane, Skardu, PK</p></li>
+                            <li><p>info@kharskardu.com</p></li>
+                            <li><p>+92 300 1234567</p></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-lg text-amber-100">Follow Us</h4>
+                        <div class="flex space-x-4 mt-4">
+                            </div>
+                    </div>
+                </div>
+                <div class="mt-8 border-t border-amber-700 pt-6 text-center text-sm text-amber-200">
+                    <p>© 2025 The Khar Skardu. All Rights Reserved.</p>
+                </div>
+            </div>
+        </footer>
+
+        <div id="lightbox" class="fixed inset-0 bg-black/90 z-[99999] hidden items-center justify-center transition-opacity duration-300 ease-in-out">
+            <button id="lightbox-close" class="absolute top-6 right-6 text-white/70 hover:text-white transition-colors z-10">
+                <svg class="w-10 h-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+            <button id="lightbox-prev" class="absolute left-4 md:left-10 top-1/2 -translate-y-1/2 text-white/70 hover:text-white transition-colors p-4 z-10"><svg class="w-8 h-8 md:w-10 md:h-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" /></svg></button>
+            <button id="lightbox-next" class="absolute right-4 md:right-10 top-1/2 -translate-y-1/2 text-white/70 hover:text-white transition-colors p-4 z-10"><svg class="w-8 h-8 md:w-10 md:h-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg></button>
+            <div class="relative w-full h-full flex items-center justify-center p-4">
+                <img id="lightbox-img" src="" alt="" class="max-w-full max-h-full object-contain transition-transform duration-300 ease-in-out transform scale-95">
+            </div>
+        </div>
+
+        <div id="video-modal" class="fixed inset-0 bg-black bg-opacity-80 z-[99999] hidden items-center justify-center p-4 transition-opacity duration-300" style="backdrop-filter: blur(5px);">
+            <div class="bg-black p-2 rounded-lg shadow-2xl w-full max-w-4xl relative">
+                <button id="close-modal-btn" class="absolute -top-4 -right-4 bg-white text-black rounded-full h-10 w-10 flex items-center justify-center font-bold text-2xl z-10 transform hover:scale-110 transition-transform">×</button>
+                <div class="aspect-video">
+                    <video id="video-player" class="w-full h-full" controls>
+                        <source src="/static/video/mainvideo.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            // --- Page Loader ---
+            const loader = document.getElementById('loading-screen');
+            const mainContent = document.getElementById('main-content');
+            window.addEventListener('load', () => {
+                loader.style.opacity = '0';
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                    mainContent.style.display = 'block';
+                    document.body.style.overflow = 'auto';
+                    // Trigger animations for elements visible on load
+                    const initialVisible = document.querySelectorAll('.animate-on-scroll');
+                    initialVisible.forEach(el => {
+                        // A small delay to ensure the page is rendered
+                        setTimeout(() => {
+                            if (el.getBoundingClientRect().top < window.innerHeight) {
+                                el.classList.add('is-visible');
+                            }
+                        }, 100);
+                    });
+                }, 750);
+            });
+
+            // --- SCROLL ANIMATION LOGIC (INTERSECTION OBSERVER) ---
+            const scrollObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1 // Trigger when 10% of the element is visible
+            });
+
+            const elementsToAnimate = document.querySelectorAll('.animate-on-scroll');
+            elementsToAnimate.forEach(el => {
+                const animationType = el.style.transform;
+                // Apply the initial transformed state
+                if (animationType.includes('translateX')) {
+                    el.style.transitionProperty = 'opacity, transform';
+                } else if (animationType.includes('translateY')) {
+                    el.style.transitionProperty = 'opacity, transform';
+                } else if (animationType.includes('scale')) {
+                     el.style.transitionProperty = 'opacity, transform';
+                } else { // Default to fade in
+                     el.style.transform = 'translateY(20px)';
+                     el.style.transitionProperty = 'opacity, transform';
+                }
+
+                if (el.style.getPropertyValue('--start-transform')) {
+                    el.style.transform = el.style.getPropertyValue('--start-transform');
+                    el.style.animation = `scatter 0.8s ease-out forwards`;
+                    el.style.animationDelay = el.style.getPropertyValue('--animation-delay');
+                }
+                
+                scrollObserver.observe(el);
+            });
+            
+            // --- Fancy Lightbox Gallery Logic ---
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            const lightbox = document.getElementById('lightbox');
+            if (galleryItems.length > 0 && lightbox) {
+                const lightboxImg = document.getElementById('lightbox-img');
+                const lightboxClose = document.getElementById('lightbox-close');
+                const lightboxPrev = document.getElementById('lightbox-prev');
+                const lightboxNext = document.getElementById('lightbox-next');
+
+                let currentIndex = 0;
+                const imageSources = Array.from(galleryItems).map(item => item.href);
+
+                function showLightbox(index) {
+                    currentIndex = index;
+                    lightboxImg.src = imageSources[currentIndex];
+                    lightboxImg.style.transform = 'scale(0.95)';
+                    lightbox.classList.remove('hidden');
+                    lightbox.classList.add('flex');
+                    document.body.style.overflow = 'hidden';
+                    setTimeout(() => {
+                        lightbox.style.opacity = '1';
+                        lightboxImg.style.transform = 'scale(1)';
+                    }, 50);
+                }
+
+                function hideLightbox() {
+                    lightbox.style.opacity = '0';
+                    lightboxImg.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        lightbox.classList.add('hidden');
+                        lightbox.classList.remove('flex');
+                        document.body.style.overflow = 'auto';
+                    }, 300);
+                }
+
+                function showPrevImage() {
+                    currentIndex = (currentIndex - 1 + imageSources.length) % imageSources.length;
+                    lightboxImg.src = imageSources[currentIndex];
+                }
+
+                function showNextImage() {
+                    currentIndex = (currentIndex + 1) % imageSources.length;
+                    lightboxImg.src = imageSources[currentIndex];
+                }
+
+                galleryItems.forEach((item, index) => {
+                    item.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        showLightbox(index);
+                    });
+                });
+
+                lightboxClose.addEventListener('click', hideLightbox);
+                lightbox.addEventListener('click', (e) => { if (e.target === lightbox) hideLightbox(); });
+                lightboxPrev.addEventListener('click', showPrevImage);
+                lightboxNext.addEventListener('click', showNextImage);
+
+                document.addEventListener('keydown', (e) => {
+                    if (!lightbox.classList.contains('hidden')) {
+                        if (e.key === 'ArrowLeft') showPrevImage();
+                        else if (e.key === 'ArrowRight') showNextImage();
+                        else if (e.key === 'Escape') hideLightbox();
+                    }
+                });
+            }
+
+            // --- Sticky Navbar on Scroll ---
+            const nav = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    nav.classList.add('bg-black', 'bg-opacity-50', 'backdrop-blur-sm', 'shadow-lg');
+                    nav.classList.remove('py-4');
+                    nav.classList.add('py-2');
+                } else {
+                    nav.classList.remove('bg-black', 'bg-opacity-50', 'backdrop-blur-sm', 'shadow-lg');
+                    nav.classList.add('py-4');
+                    nav.classList.remove('py-2');
+                }
+            });
+
+            // --- Mobile menu toggle ---
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // --- Date Picker Logic ---
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('checkin').setAttribute('min', today);
+            document.getElementById('checkout').setAttribute('min', today);
+            document.getElementById('checkin').addEventListener('change', function() {
+                let checkinDate = this.value;
+                document.getElementById('checkout').setAttribute('min', checkinDate);
+            });
+
+            // --- Hero Slideshow ---
+            const slides = document.querySelectorAll('.hero-slideshow-image');
+            if (slides.length > 0) {
+                let currentSlide = 0;
+                setInterval(() => {
+                    slides[currentSlide].classList.remove('active');
+                    currentSlide = (currentSlide + 1) % slides.length;
+                    slides[currentSlide].classList.add('active');
+                }, 5000);
+            }
+
+            // --- Room Card Gallery Slider ---
+            document.querySelectorAll('.room-gallery').forEach(gallery => {
+                const track = gallery.querySelector('.slider-track');
+                const images = track.querySelectorAll('img');
+                const prevBtn = gallery.querySelector('.prev-btn');
+                const nextBtn = gallery.querySelector('.next-btn');
+                let currentIndex = 0;
+                if(images.length <= 1) {
+                    prevBtn.style.display = 'none';
+                    nextBtn.style.display = 'none';
+                    return;
+                }
+                function updateSlider() {
+                    track.style.transform = `translateX(-${currentIndex * 100}%)`;
+                }
+                prevBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    currentIndex = (currentIndex - 1 + images.length) % images.length;
+                    updateSlider();
+                });
+                nextBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    currentIndex = (currentIndex + 1) % images.length;
+                    updateSlider();
+                });
+            });
+             
+            // --- Seasonal Showcase Logic ---
+            const tabs = document.querySelectorAll('.season-tab');
+            const panels = document.querySelectorAll('.season-panel');
+            const seasonTitle = document.getElementById('season-title');
+            const seasonDescription = document.getElementById('season-description');
+            let currentEffectsInterval = null;
+
+            const seasonData = {
+                winter: { title: "Winter Wonderland", description: "Embrace the crisp, serene beauty of a snow-covered landscape.", effectsContainerId: 'winter-effects', createEffect: () => { const el = document.createElement('div'); el.innerHTML = '❄️'; el.className = 'absolute text-xl text-white opacity-80'; el.style.left = `${Math.random()*100}%`; el.style.animation = `fall ${Math.random()*5+5}s linear infinite`; el.style.top = '-10px'; return el; } },
+                autumn: { title: "Autumn's Golden Embrace", description: "Witness the landscape transform into a canvas of gold, red, and orange.", effectsContainerId: 'autumn-effects', createEffect: () => { const el = document.createElement('div'); el.innerHTML = '🍂'; el.className = 'absolute text-2xl'; el.style.left = `${Math.random()*100}%`; el.style.animation = `fall ${Math.random()*6+6}s linear infinite`; el.style.top = '-20px'; el.style.transform = `rotate(${Math.random()*360}deg)`; return el; } },
+                spring: { title: "The Bloom of Spring", description: "Verdant valleys and blossoming wildflowers create a vibrant, refreshing atmosphere.", effectsContainerId: 'spring-effects', createEffect: () => { const el = document.createElement('div'); el.innerHTML = '🌸'; el.className = 'absolute text-xl'; el.style.left = `${Math.random()*100}%`; el.style.animation = `fall ${Math.random()*8+8}s linear infinite`; el.style.top = '-20px'; return el; } },
+                summer: { title: "Sun-Kissed Summer", description: "Enjoy long, sunny days perfect for exploring the lush green mountains.", effectsContainerId: 'summer-effects', createEffect: () => { const el = document.createElement('div'); el.className = 'absolute bg-yellow-200 opacity-10'; el.style.left = `${Math.random()*120-10}%`; el.style.top = `${Math.random()*120-10}%`; el.style.width = `${Math.random()*200+150}px`; el.style.height = '2px'; el.style.transform = `rotate(${Math.random()*360}deg)`; el.style.animation = `shimmer-effect ${Math.random()*4+2}s ease-in-out infinite alternate`; return el; } }
+            };
+
+            const styleSheet = document.createElement("style");
+            styleSheet.innerText = `@keyframes fall { to { transform: translateY(100vh) rotate(360deg); opacity: 0; } } @keyframes shimmer-effect { from { opacity: 0; } to { opacity: 0.1; } }`;
+            document.head.appendChild(styleSheet);
+            
+            function stopEffects() {
+                if (currentEffectsInterval) clearInterval(currentEffectsInterval);
+                Object.values(seasonData).forEach(d => { const c = document.getElementById(d.effectsContainerId); if(c) c.innerHTML = ''; });
+            }
+
+            function startEffects(season) {
+                stopEffects();
+                const config = seasonData[season];
+                const container = document.getElementById(config.effectsContainerId);
+                if (!container) return;
+                currentEffectsInterval = setInterval(() => {
+                    const effect = config.createEffect();
+                    container.appendChild(effect);
+                    setTimeout(() => effect.remove(), 10000); 
+                }, 200);
+            }
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const season = tab.dataset.season;
+                    tabs.forEach(t => {
+                        t.classList.remove('active-tab', 'text-amber-800'); t.classList.add('text-gray-500');
+                        t.querySelector('span').classList.remove('scale-x-100'); t.querySelector('span').classList.add('scale-x-0');
+                    });
+                    tab.classList.add('active-tab', 'text-amber-800'); tab.classList.remove('text-gray-500');
+                    tab.querySelector('span').classList.add('scale-x-100'); tab.querySelector('span').classList.remove('scale-x-0');
+
+                    panels.forEach(panel => {
+                        panel.style.transition = 'opacity 700ms ease-in-out';
+                        if (panel.id === season) { panel.classList.remove('opacity-0', 'z-0'); panel.classList.add('opacity-100', 'z-10'); } 
+                        else { panel.classList.remove('opacity-100', 'z-10'); panel.classList.add('opacity-0', 'z-0'); }
+                    });
+
+                    seasonTitle.style.opacity = 0; seasonDescription.style.opacity = 0;
+                    setTimeout(() => {
+                        seasonTitle.textContent = seasonData[season].title; seasonDescription.textContent = seasonData[season].description;
+                        seasonTitle.style.opacity = 1; seasonDescription.style.opacity = 1;
+                    }, 300);
+                    startEffects(season);
+                });
+            });
+            startEffects('winter');
+
+            // --- Video Modal Logic ---
+            const playButton = document.getElementById('play-video-button');
+            const videoModal = document.getElementById('video-modal');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+            const videoPlayer = document.getElementById('video-player');
+
+            function openModal() { videoModal.classList.remove('hidden'); videoModal.classList.add('flex'); videoPlayer.play(); document.body.style.overflow = 'hidden'; }
+            function closeModal() { videoModal.classList.add('hidden'); videoModal.classList.remove('flex'); videoPlayer.pause(); videoPlayer.currentTime = 0; document.body.style.overflow = 'auto'; }
+
+            if(playButton) playButton.addEventListener('click', openModal);
+            if(closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
+            if(videoModal) videoModal.addEventListener('click', (e) => { if(e.target === videoModal) closeModal(); });
+
+            // --- Menu Modal ---
+            const menuModal = document.getElementById("menuModal");
+            const viewMenuBtn = document.getElementById("viewMenuBtn");
+            const closeMenuSpan = document.getElementsByClassName("close")[0];
+
+            if(viewMenuBtn) viewMenuBtn.onclick = () => menuModal.style.display = "block";
+            if(closeMenuSpan) closeMenuSpan.onclick = () => menuModal.style.display = "none";
+            window.onclick = (event) => { if (event.target == menuModal) menuModal.style.display = "none"; }
+        });
+    </script>
+</body>
+</html>
