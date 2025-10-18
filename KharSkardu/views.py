@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from adminportal.models import Room, Booking, Images, GalleryImage
+from adminportal.models import Room, Booking, Images, GalleryImage,Post
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 
@@ -67,6 +67,7 @@ def home(request):
     rooms=Room.objects.all()
     gallery=GalleryImage.objects.all()
     room_list = []
+    blogs=Post.objects.all()
     
 
 
@@ -101,6 +102,7 @@ def home(request):
         'rooms':selected_rooms,
         'gallery':gallery,
         'tags':tags(),
+        'blogs':blogs,
     })
 from django.db.models import Q
 
@@ -300,8 +302,16 @@ def decline_booking(request, booking_id):
         booking = Booking.objects.get(id=booking_id)
         booking.status = "Declined"
         booking.save()
+        booking.delete()
         messages.success(request, "Booking has been declined.")
         return redirect('admin-home')
     except Booking.DoesNotExist:
         messages.error(request, "Booking not found.")
         return redirect('admin-home') 
+def blogs(request,id):
+    post=Post.objects.get(id=id)
+    tagss=post.tags.split(',')
+    return render(request, 'app/blogview.html',{
+        'post':post,
+        'tags':tagss,
+    })

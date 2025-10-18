@@ -62,4 +62,19 @@ class Booking(models.Model):
         if self.status == 'Checked Out':
             return True
         return False
+from django.db import models
+from django.contrib.auth.models import User
+from ckeditor.fields import RichTextField
+
+class Post(models.Model):
+    title = models.CharField(max_length=200)
     
+    # Use RichTextField instead of a standard TextField
+    content = RichTextField(blank=True, null=True)
+    # ImageField requires Pillow to be installed
+    featured_image = models.ImageField(upload_to='post_images/', blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    tags = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.title

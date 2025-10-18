@@ -1,6 +1,7 @@
 from django.urls import path, include
 from django.contrib import admin
 from . import views
+from . import tests
 urlpatterns = [
     path('', views.home, name='admin-home'),
     path('rooms/', views.rooms, name='admin-rooms'),
@@ -16,6 +17,9 @@ urlpatterns = [
     # download ticket
     path('download-ticket/<int:id>/', views.download_ticket, name='download_ticket'),
     path('admin/booking/success/', views.admin_booking_success, name='admin_booking_success'),
+    # /blogs
+    path('blogs/', views.blogs, name='admin-blog'),
+    
 
 
 ]

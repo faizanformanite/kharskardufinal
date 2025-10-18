@@ -345,3 +345,22 @@ def download_ticket(request, id):
     }
     
     return JsonResponse({'success': 'success', 'details': details}, status=200)
+def blogs(request):
+    if request.method == 'POST':
+        # process blog creation here
+        title = request.POST.get('title')
+        content = request.POST.get('content')
+        tags = request.POST.get('tags')
+        # Assuming you have a Post model to save blogs
+        from .models import Post
+        try:
+            Post.objects.create(title=title, content=content, tags=tags)
+            messages.success(request, 'Blog post created successfully.',)
+
+        except Exception as e:
+            messages.error(request, f'Error creating blog post: {str(e)}',)
+        # now delete the post data to prevent resubmission
+        return redirect('admin-blog')
+    return render(request, 'adminportal/blogs.html',{
+        'selected':'blog'
+    })

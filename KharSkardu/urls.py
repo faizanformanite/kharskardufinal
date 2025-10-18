@@ -33,6 +33,8 @@ urlpatterns = [
     path('booking/success/', views.booking_success, name='booking_success'),
     path('confirmbooking/<int:booking_id>/', views.confirm_booking, name='confirm_booking'),
     path('declinebooking/<int:booking_id>/', views.decline_booking, name='decline_booking'),
+    # blogview
+    path('blogview/<int:id>/', views.blogs, name='blogview'),
 
 ]
 if settings.DEBUG:
