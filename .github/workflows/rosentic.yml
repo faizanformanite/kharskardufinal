@@ -10,7 +10,9 @@ jobs:
       contents: read
       pull-requests: write
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: Rosentic/rosentic-action@v1
+      - name: Run Rosentic Action
+        uses: Rosentic/rosentic-action@v1
