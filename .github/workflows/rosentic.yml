@@ -2,7 +2,6 @@ name: Rosentic Scan
 on:
   pull_request:
     branches: ["**"]
-
 jobs:
   rosentic:
     runs-on: ubuntu-latest
