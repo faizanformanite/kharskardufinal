@@ -1,7 +1,7 @@
 name: Rosentic Scan
 on:
   pull_request:
-    branches: [main]
+    branches: ["**"]
 
 jobs:
   rosentic:
